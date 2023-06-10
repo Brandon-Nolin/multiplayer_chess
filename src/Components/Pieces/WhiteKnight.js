@@ -1,10 +1,50 @@
 import "./WhiteKnight.css";
 
 function WhiteKnight(props) {
+  function knightClicked(e) {
+    e.stopPropagation();
+
+    const legalMoves = [];
+
+    if (props.rowId - 2 > -1 && props.columnId - 1 > -1) {
+      legalMoves.push([props.rowId - 2, props.columnId - 1]);
+    }
+
+    if (props.rowId - 1 > -1 && props.columnId - 2 > -1) {
+      legalMoves.push([props.rowId - 1, props.columnId - 2]);
+    }
+
+    if (props.rowId - 2 > -1 && props.columnId + 1 < 8) {
+      legalMoves.push([props.rowId - 2, props.columnId + 1]);
+    }
+
+    if (props.rowId - 1 > -1 && props.columnId + 2 < 8) {
+      legalMoves.push([props.rowId - 1, props.columnId + 2]);
+    }
+
+    if (props.rowId + 2 < 8 && props.columnId - 1 > -1) {
+      legalMoves.push([props.rowId + 2, props.columnId - 1]);
+    }
+
+    if (props.rowId + 1 < 8 && props.columnId - 2 > -1) {
+      legalMoves.push([props.rowId + 1, props.columnId - 2]);
+    }
+
+    if (props.rowId + 2 < 8 && props.columnId + 1 < 8) {
+      legalMoves.push([props.rowId + 2, props.columnId + 1]);
+    }
+
+    if (props.rowId + 1 < 8 && props.columnId + 2 < 8) {
+      legalMoves.push([props.rowId + 1, props.columnId + 2]);
+    }
+
+    props.pieceClicked([props.rowId, props.columnId], legalMoves);
+  }
+
   return (
     <svg
       className="white-knight"
-      // onClick={knightClicked}
+      onClick={knightClicked}
       xmlns="http://www.w3.org/2000/svg"
       version="1.1"
       width="45"
