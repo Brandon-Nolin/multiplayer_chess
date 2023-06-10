@@ -62,8 +62,6 @@ function WhiteBishop(props) {
       }
     }
 
-    console.log(legalMoves);
-
     props.pieceClicked([props.rowId, props.columnId], legalMoves);
   }
 
