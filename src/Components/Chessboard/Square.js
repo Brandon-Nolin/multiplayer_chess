@@ -1,3 +1,4 @@
+import WhiteKing from "../Pieces/WhiteKing";
 import WhiteQueen from "../Pieces/WhiteQueen";
 import WhiteBishop from "../Pieces/WhiteBishop";
 import WhiteRook from "../Pieces/WhiteRook";
@@ -50,6 +51,14 @@ function Square(props) {
       )}
       {props.piece === "white-queen" && (
         <WhiteQueen
+          board={props.board}
+          pieceClicked={props.pieceClicked}
+          columnId={props.columnId}
+          rowId={props.rowId}
+        />
+      )}
+      {props.piece === "white-king" && (
+        <WhiteKing
           board={props.board}
           pieceClicked={props.pieceClicked}
           columnId={props.columnId}
