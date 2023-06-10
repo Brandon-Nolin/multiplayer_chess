@@ -6,8 +6,6 @@ function WhitePawn(props) {
 
     let legalMoves = [];
 
-    console.log(props.board);
-
     if (props.board[props.rowId - 1][props.columnId].piece === null) {
       legalMoves = [[props.rowId - 1, props.columnId]];
 

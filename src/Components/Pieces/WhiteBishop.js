@@ -1,9 +1,75 @@
 import "./WhiteBishop.css";
 
 function WhiteBishop(props) {
+  function bishopClicked(e) {
+    e.stopPropagation();
+
+    let legalMoves = [];
+
+    let row = props.rowId;
+    let column = props.columnId;
+
+    while (row > 0 && column > 0) {
+      row--;
+      column--;
+
+      legalMoves.push([row, column]);
+
+      if (props.board[row][column].piece !== null) {
+        break;
+      }
+    }
+
+    row = props.rowId;
+    column = props.columnId;
+
+    while (row > 0 && column < 7) {
+      row--;
+      column++;
+
+      legalMoves.push([row, column]);
+
+      if (props.board[row][column].piece !== null) {
+        break;
+      }
+    }
+
+    row = props.rowId;
+    column = props.columnId;
+
+    while (row < 7 && column < 7) {
+      row++;
+      column++;
+
+      legalMoves.push([row, column]);
+
+      if (props.board[row][column].piece !== null) {
+        break;
+      }
+    }
+
+    row = props.rowId;
+    column = props.columnId;
+
+    while (row < 7 && column > 0) {
+      row++;
+      column--;
+
+      legalMoves.push([row, column]);
+
+      if (props.board[row][column].piece !== null) {
+        break;
+      }
+    }
+
+    console.log(legalMoves);
+
+    props.pieceClicked([props.rowId, props.columnId], legalMoves);
+  }
+
   return (
     <svg
-      // onClick={bishopClicked}
+      onClick={bishopClicked}
       className="white-bishop"
       xmlns="http://www.w3.org/2000/svg"
       version="1.1"
