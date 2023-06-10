@@ -92,6 +92,7 @@ function ChessBoard() {
         squares.push(
           <Square
             key={square.rowId + "-" + square.columnId}
+            board={board}
             squareClicked={squareClicked}
             piece={square.piece}
             pieceClicked={pieceClicked}

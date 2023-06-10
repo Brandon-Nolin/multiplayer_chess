@@ -4,13 +4,24 @@ function WhitePawn(props) {
   function pawnClicked(e) {
     e.stopPropagation();
 
-    const legalMoves = [[props.rowId - 1, props.columnId]];
+    let legalMoves = [];
 
-    if (props.pawnHasMoved !== true) {
-      legalMoves.push([props.rowId - 2, props.columnId]);
+    console.log(props.board);
+
+    if (props.board[props.rowId - 1][props.columnId].piece === null) {
+      legalMoves = [[props.rowId - 1, props.columnId]];
+
+      if (
+        props.pawnHasMoved !== true &&
+        props.board[props.rowId - 2][props.columnId].piece === null
+      ) {
+        legalMoves.push([props.rowId - 2, props.columnId]);
+      }
+
+      props.pieceClicked([props.rowId, props.columnId], legalMoves);
+    } else {
+      props.pieceClicked([props.rowId, props.columnId], legalMoves);
     }
-
-    props.pieceClicked([props.rowId, props.columnId], legalMoves);
   }
 
   return (
