@@ -1,4 +1,3 @@
-import "./WhitePawn.css";
 import whitepawn from "../../Assets/Pieces/whitepawn.svg";
 
 function WhitePawn(props) {
@@ -26,7 +25,7 @@ function WhitePawn(props) {
   return (
     <img
       onClick={pawnClicked}
-      className="white-pawn"
+      className="piece"
       src={whitepawn}
       alt="White Pawn"
     />

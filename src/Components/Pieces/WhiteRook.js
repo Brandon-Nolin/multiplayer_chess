@@ -1,4 +1,3 @@
-import "./WhiteRook.css";
 import whiterook from "../../Assets/Pieces/whiterook.svg";
 
 function WhiteRook(props) {
@@ -62,7 +61,7 @@ function WhiteRook(props) {
   return (
     <img
       onClick={rookClicked}
-      className="white-rook"
+      className="piece"
       src={whiterook}
       alt="White Rook"
     />

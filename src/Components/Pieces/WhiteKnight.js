@@ -1,4 +1,3 @@
-import "./WhiteKnight.css";
 import whiteknight from "../../Assets/Pieces/whiteknight.svg";
 
 function WhiteKnight(props) {
@@ -45,7 +44,7 @@ function WhiteKnight(props) {
   return (
     <img
       onClick={knightClicked}
-      className="white-knight"
+      className="piece"
       src={whiteknight}
       alt="White Knight"
     />

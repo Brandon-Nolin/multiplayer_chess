@@ -1,13 +1,62 @@
-import whitebishop from "../../Assets/Pieces/whitebishop.svg";
+import whitequeen from "../../Assets/Pieces/whitequeen.svg";
 
-function WhiteBishop(props) {
-  function bishopClicked(e) {
+function WhiteQueen(props) {
+  function queenClicked(e) {
     e.stopPropagation();
 
     let legalMoves = [];
 
     let row = props.rowId;
     let column = props.columnId;
+
+    while (row > 0) {
+      row--;
+
+      legalMoves.push([row, props.columnId]);
+
+      if (props.board[row][props.columnId].piece !== null) {
+        break;
+      }
+    }
+
+    row = props.rowId;
+
+    while (row < 7) {
+      row++;
+
+      legalMoves.push([row, props.columnId]);
+
+      if (props.board[row][props.columnId].piece !== null) {
+        break;
+      }
+    }
+
+    row = props.rowId;
+
+    while (column < 7) {
+      column++;
+
+      legalMoves.push([props.rowId, column]);
+
+      if (props.board[props.rowId][column].piece !== null) {
+        break;
+      }
+    }
+
+    column = props.columnId;
+
+    while (column > 0) {
+      column--;
+
+      legalMoves.push([props.rowId, column]);
+
+      if (props.board[props.rowId][column].piece !== null) {
+        break;
+      }
+    }
+
+    row = props.rowId;
+    column = props.columnId;
 
     while (row > 0 && column > 0) {
       row--;
@@ -67,12 +116,12 @@ function WhiteBishop(props) {
 
   return (
     <img
-      onClick={bishopClicked}
+      onClick={queenClicked}
       className="piece"
-      src={whitebishop}
-      alt="White Bishop"
+      src={whitequeen}
+      alt="White Queen"
     />
   );
 }
 
-export default WhiteBishop;
+export default WhiteQueen;
