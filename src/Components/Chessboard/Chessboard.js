@@ -10,6 +10,22 @@ function ChessBoard() {
     // pieceClicked(12, 1);
   }, []);
 
+  const squareClicked = () => {
+    setBoard((prevBoard) => {
+      let newBoard = [...prevBoard];
+
+      //unselect all other board squares and unset as legal moves.
+      newBoard.forEach((row) => {
+        row.forEach((square) => {
+          square.selected = false;
+          square.legalMove = false;
+        });
+      });
+
+      return newBoard;
+    });
+  };
+
   const pieceClicked = (selectedPiece, legalMoves) => {
     setBoard((prevBoard) => {
       let newBoard = [...prevBoard];
@@ -52,8 +68,7 @@ function ChessBoard() {
         });
       });
 
-      //find selected piece
-
+      //set the piece of the new location to the piece of the selected location.
       newBoard[newLocation[0]][newLocation[1]].piece = selectedPiece[2];
 
       if (
@@ -62,6 +77,7 @@ function ChessBoard() {
         newBoard[newLocation[0]][newLocation[1]].pawnHasMoved = true;
       }
 
+      //set the old locations piece to null.
       newBoard[selectedPiece[0]][selectedPiece[1]].piece = null;
 
       return newBoard;
@@ -76,6 +92,7 @@ function ChessBoard() {
         squares.push(
           <Square
             key={square.rowId + "-" + square.columnId}
+            squareClicked={squareClicked}
             piece={square.piece}
             pieceClicked={pieceClicked}
             movePiece={movePiece}

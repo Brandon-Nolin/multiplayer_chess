@@ -8,7 +8,7 @@ function Square(props) {
     if (props.legalMove) {
       props.movePiece([props.rowId, props.columnId]);
     } else {
-      // props.onSquareClicked();
+      props.squareClicked();
     }
   }
 
