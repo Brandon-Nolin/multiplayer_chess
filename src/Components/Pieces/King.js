@@ -45,19 +45,9 @@ function WhiteKing(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img
-          onClick={kingClicked}
-          className="piece"
-          src={whiteking}
-          alt="White King"
-        />
+        <img onClick={kingClicked} className="piece" src={whiteking} alt="White King" />
       ) : (
-        <img
-          onClick={kingClicked}
-          className="piece"
-          src={blackking}
-          alt="Black King"
-        />
+        <img onClick={kingClicked} className="piece" src={blackking} alt="Black King" />
       )}
     </>
   );

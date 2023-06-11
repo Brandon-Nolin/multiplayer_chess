@@ -3,6 +3,10 @@ import blackbishop from "../../Assets/Pieces/blackbishop.svg";
 
 function WhiteBishop(props) {
   function bishopClicked(e) {
+    if (props.legalMove) {
+      return;
+    }
+
     e.stopPropagation();
 
     let legalMoves = [];
@@ -69,19 +73,9 @@ function WhiteBishop(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img
-          onClick={bishopClicked}
-          className="piece"
-          src={whitebishop}
-          alt="White Bishop"
-        />
+        <img onClick={bishopClicked} className="piece" src={whitebishop} alt="White Bishop" />
       ) : (
-        <img
-          onClick={bishopClicked}
-          className="piece"
-          src={blackbishop}
-          alt="Black Bishop"
-        />
+        <img onClick={bishopClicked} className="piece" src={blackbishop} alt="Black Bishop" />
       )}
     </>
   );

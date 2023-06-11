@@ -3,6 +3,8 @@ import Square from "./Square";
 import { initialBoard } from "./initial-board-state";
 
 function ChessBoard() {
+  const [isTurn, setIsTurn] = useState(true);
+  const [isWhite, setIsWhite] = useState(true);
   const [board, setBoard] = useState(initialBoard);
   const [selectedPiece, setSelectedPiece] = useState([]);
 
@@ -46,11 +48,21 @@ function ChessBoard() {
         newBoard[selectedPiece[0]][selectedPiece[1]].piece,
       ]);
 
-      legalMoves.forEach((legalMove) => {
-        if (newBoard[legalMove[0]][legalMove[1]].piece === null) {
-          newBoard[legalMove[0]][legalMove[1]].legalMove = true;
-        }
-      });
+      if (isTurn) {
+        legalMoves.forEach((legalMove) => {
+          if (
+            (isWhite && newBoard[legalMove[0]][legalMove[1]].piece?.includes("black")) ||
+            newBoard[legalMove[0]][legalMove[1]].piece === null
+          ) {
+            newBoard[legalMove[0]][legalMove[1]].legalMove = true;
+          } else if (
+            (!isWhite && newBoard[legalMove[0]][legalMove[1]].piece?.includes("white")) ||
+            newBoard[legalMove[0]][legalMove[1]].piece === null
+          ) {
+            newBoard[legalMove[0]][legalMove[1]].legalMove = true;
+          }
+        });
+      }
 
       return newBoard;
     });
@@ -71,9 +83,8 @@ function ChessBoard() {
       //set the piece of the new location to the piece of the selected location.
       newBoard[newLocation[0]][newLocation[1]].piece = selectedPiece[2];
 
-      if (
-        newBoard[selectedPiece[0]][selectedPiece[1]].piece?.includes("pawn")
-      ) {
+      if (newBoard[selectedPiece[0]][selectedPiece[1]].piece?.includes("pawn")) {
+        newBoard[selectedPiece[0]][selectedPiece[1]].pawnHasMoved = false;
         newBoard[newLocation[0]][newLocation[1]].pawnHasMoved = true;
       }
 
@@ -102,7 +113,7 @@ function ChessBoard() {
             rowId={square.rowId}
             pawnHasMoved={square.pawnHasMoved}
             classes={`square ${square.color} ${square.legalMove && "movable"} ${
-              square.selected
+              square.selected && "selected"
             }`}
           />
         );

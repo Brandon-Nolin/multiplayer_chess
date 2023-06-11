@@ -3,6 +3,10 @@ import blackqueen from "../../Assets/Pieces/blackqueen.svg";
 
 function WhiteQueen(props) {
   function queenClicked(e) {
+    if (props.legalMove) {
+      return;
+    }
+
     e.stopPropagation();
 
     let legalMoves = [];
@@ -118,19 +122,9 @@ function WhiteQueen(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img
-          onClick={queenClicked}
-          className="piece"
-          src={whitequeen}
-          alt="White Queen"
-        />
+        <img onClick={queenClicked} className="piece" src={whitequeen} alt="White Queen" />
       ) : (
-        <img
-          onClick={queenClicked}
-          className="piece"
-          src={blackqueen}
-          alt="Black Queen"
-        />
+        <img onClick={queenClicked} className="piece" src={blackqueen} alt="Black Queen" />
       )}
     </>
   );

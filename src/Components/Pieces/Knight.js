@@ -3,6 +3,10 @@ import blackknight from "../../Assets/Pieces/blackknight.svg";
 
 function WhiteKnight(props) {
   function knightClicked(e) {
+    if (props.legalMove) {
+      return;
+    }
+
     e.stopPropagation();
 
     const legalMoves = [];
@@ -45,19 +49,9 @@ function WhiteKnight(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img
-          onClick={knightClicked}
-          className="piece"
-          src={whiteknight}
-          alt="White Knight"
-        />
+        <img onClick={knightClicked} className="piece" src={whiteknight} alt="White Knight" />
       ) : (
-        <img
-          onClick={knightClicked}
-          className="piece"
-          src={blackknight}
-          alt="Black Knight"
-        />
+        <img onClick={knightClicked} className="piece" src={blackknight} alt="Black Knight" />
       )}
     </>
   );

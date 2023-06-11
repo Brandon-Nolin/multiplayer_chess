@@ -21,6 +21,7 @@ function Square(props) {
           board={props.board}
           piece={props.piece}
           pieceClicked={props.pieceClicked}
+          legalMove={props.legalMove}
           columnId={props.columnId}
           rowId={props.rowId}
           pawnHasMoved={props.pawnHasMoved}
@@ -31,6 +32,7 @@ function Square(props) {
           board={props.board}
           piece={props.piece}
           pieceClicked={props.pieceClicked}
+          legalMove={props.legalMove}
           columnId={props.columnId}
           rowId={props.rowId}
         />
@@ -40,6 +42,7 @@ function Square(props) {
           board={props.board}
           piece={props.piece}
           pieceClicked={props.pieceClicked}
+          legalMove={props.legalMove}
           columnId={props.columnId}
           rowId={props.rowId}
         />
@@ -49,6 +52,7 @@ function Square(props) {
           board={props.board}
           piece={props.piece}
           pieceClicked={props.pieceClicked}
+          legalMove={props.legalMove}
           columnId={props.columnId}
           rowId={props.rowId}
         />
@@ -58,6 +62,7 @@ function Square(props) {
           board={props.board}
           piece={props.piece}
           pieceClicked={props.pieceClicked}
+          legalMove={props.legalMove}
           columnId={props.columnId}
           rowId={props.rowId}
         />
@@ -67,6 +72,7 @@ function Square(props) {
           board={props.board}
           piece={props.piece}
           pieceClicked={props.pieceClicked}
+          legalMove={props.legalMove}
           columnId={props.columnId}
           rowId={props.rowId}
         />

@@ -3,6 +3,10 @@ import blackrook from "../../Assets/Pieces/blackrook.svg";
 
 function WhiteRook(props) {
   function rookClicked(e) {
+    if (props.legalMove) {
+      return;
+    }
+
     e.stopPropagation();
 
     let legalMoves = [];
@@ -62,19 +66,9 @@ function WhiteRook(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img
-          onClick={rookClicked}
-          className="piece"
-          src={whiterook}
-          alt="White Rook"
-        />
+        <img onClick={rookClicked} className="piece" src={whiterook} alt="White Rook" />
       ) : (
-        <img
-          onClick={rookClicked}
-          className="piece"
-          src={blackrook}
-          alt="Black Rook"
-        />
+        <img onClick={rookClicked} className="piece" src={blackrook} alt="Black Rook" />
       )}
     </>
   );
