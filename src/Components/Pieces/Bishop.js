@@ -1,62 +1,14 @@
-import whitequeen from "../../Assets/Pieces/whitequeen.svg";
+import whitebishop from "../../Assets/Pieces/whitebishop.svg";
+import blackbishop from "../../Assets/Pieces/blackbishop.svg";
 
-function WhiteQueen(props) {
-  function queenClicked(e) {
+function WhiteBishop(props) {
+  function bishopClicked(e) {
     e.stopPropagation();
 
     let legalMoves = [];
 
     let row = props.rowId;
     let column = props.columnId;
-
-    while (row > 0) {
-      row--;
-
-      legalMoves.push([row, props.columnId]);
-
-      if (props.board[row][props.columnId].piece !== null) {
-        break;
-      }
-    }
-
-    row = props.rowId;
-
-    while (row < 7) {
-      row++;
-
-      legalMoves.push([row, props.columnId]);
-
-      if (props.board[row][props.columnId].piece !== null) {
-        break;
-      }
-    }
-
-    row = props.rowId;
-
-    while (column < 7) {
-      column++;
-
-      legalMoves.push([props.rowId, column]);
-
-      if (props.board[props.rowId][column].piece !== null) {
-        break;
-      }
-    }
-
-    column = props.columnId;
-
-    while (column > 0) {
-      column--;
-
-      legalMoves.push([props.rowId, column]);
-
-      if (props.board[props.rowId][column].piece !== null) {
-        break;
-      }
-    }
-
-    row = props.rowId;
-    column = props.columnId;
 
     while (row > 0 && column > 0) {
       row--;
@@ -115,13 +67,24 @@ function WhiteQueen(props) {
   }
 
   return (
-    <img
-      onClick={queenClicked}
-      className="piece"
-      src={whitequeen}
-      alt="White Queen"
-    />
+    <>
+      {props.piece?.includes("white") ? (
+        <img
+          onClick={bishopClicked}
+          className="piece"
+          src={whitebishop}
+          alt="White Bishop"
+        />
+      ) : (
+        <img
+          onClick={bishopClicked}
+          className="piece"
+          src={blackbishop}
+          alt="Black Bishop"
+        />
+      )}
+    </>
   );
 }
 
-export default WhiteQueen;
+export default WhiteBishop;

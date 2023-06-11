@@ -1,4 +1,5 @@
 import whiterook from "../../Assets/Pieces/whiterook.svg";
+import blackrook from "../../Assets/Pieces/blackrook.svg";
 
 function WhiteRook(props) {
   function rookClicked(e) {
@@ -59,12 +60,23 @@ function WhiteRook(props) {
   }
 
   return (
-    <img
-      onClick={rookClicked}
-      className="piece"
-      src={whiterook}
-      alt="White Rook"
-    />
+    <>
+      {props.piece?.includes("white") ? (
+        <img
+          onClick={rookClicked}
+          className="piece"
+          src={whiterook}
+          alt="White Rook"
+        />
+      ) : (
+        <img
+          onClick={rookClicked}
+          className="piece"
+          src={blackrook}
+          alt="Black Rook"
+        />
+      )}
+    </>
   );
 }
 

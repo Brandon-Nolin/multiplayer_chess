@@ -1,4 +1,5 @@
 import whiteking from "../../Assets/Pieces/whiteking.svg";
+import blackking from "../../Assets/Pieces/blackking.svg";
 
 function WhiteKing(props) {
   function kingClicked(e) {
@@ -42,12 +43,23 @@ function WhiteKing(props) {
   }
 
   return (
-    <img
-      onClick={kingClicked}
-      className="piece"
-      src={whiteking}
-      alt="White King"
-    />
+    <>
+      {props.piece?.includes("white") ? (
+        <img
+          onClick={kingClicked}
+          className="piece"
+          src={whiteking}
+          alt="White King"
+        />
+      ) : (
+        <img
+          onClick={kingClicked}
+          className="piece"
+          src={blackking}
+          alt="Black King"
+        />
+      )}
+    </>
   );
 }
 

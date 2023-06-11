@@ -1,9 +1,9 @@
-import WhiteKing from "../Pieces/WhiteKing";
-import WhiteQueen from "../Pieces/WhiteQueen";
-import WhiteBishop from "../Pieces/WhiteBishop";
-import WhiteRook from "../Pieces/WhiteRook";
-import WhiteKnight from "../Pieces/WhiteKnight";
-import WhitePawn from "../Pieces/WhitePawn";
+import King from "../Pieces/King";
+import Queen from "../Pieces/Queen";
+import Bishop from "../Pieces/Bishop";
+import Rook from "../Pieces/Rook";
+import Knight from "../Pieces/Knight";
+import Pawn from "../Pieces/Pawn";
 
 function Square(props) {
   function squareClicked() {
@@ -16,50 +16,56 @@ function Square(props) {
 
   return (
     <div onClick={squareClicked} className={props.classes}>
-      {props.piece === "white-pawn" && (
-        <WhitePawn
+      {props.piece?.includes("pawn") && (
+        <Pawn
           board={props.board}
+          piece={props.piece}
           pieceClicked={props.pieceClicked}
           columnId={props.columnId}
           rowId={props.rowId}
           pawnHasMoved={props.pawnHasMoved}
         />
       )}
-      {props.piece === "white-rook" && (
-        <WhiteRook
+      {props.piece?.includes("rook") && (
+        <Rook
           board={props.board}
+          piece={props.piece}
           pieceClicked={props.pieceClicked}
           columnId={props.columnId}
           rowId={props.rowId}
         />
       )}
-      {props.piece === "white-knight" && (
-        <WhiteKnight
+      {props.piece?.includes("knight") && (
+        <Knight
           board={props.board}
+          piece={props.piece}
           pieceClicked={props.pieceClicked}
           columnId={props.columnId}
           rowId={props.rowId}
         />
       )}
-      {props.piece === "white-bishop" && (
-        <WhiteBishop
+      {props.piece?.includes("bishop") && (
+        <Bishop
           board={props.board}
+          piece={props.piece}
           pieceClicked={props.pieceClicked}
           columnId={props.columnId}
           rowId={props.rowId}
         />
       )}
-      {props.piece === "white-queen" && (
-        <WhiteQueen
+      {props.piece?.includes("queen") && (
+        <Queen
           board={props.board}
+          piece={props.piece}
           pieceClicked={props.pieceClicked}
           columnId={props.columnId}
           rowId={props.rowId}
         />
       )}
-      {props.piece === "white-king" && (
-        <WhiteKing
+      {props.piece?.includes("king") && (
+        <King
           board={props.board}
+          piece={props.piece}
           pieceClicked={props.pieceClicked}
           columnId={props.columnId}
           rowId={props.rowId}

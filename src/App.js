@@ -14,7 +14,7 @@ function App() {
           Cburnett
         </a>{" "}
         -{" "}
-        <span class="int-own-work" lang="en&">
+        <span className="int-own-work" lang="en&">
           Own work
         </span>
         ,{" "}
