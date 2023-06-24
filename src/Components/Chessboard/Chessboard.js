@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import Square from "./Square";
 import { initialBoard } from "./initial-board-state";
 
-function ChessBoard() {
+function ChessBoard(props) {
   const [isTurn, setIsTurn] = useState(true);
-  const [isWhite, setIsWhite] = useState(true);
+  const [isWhite, setIsWhite] = useState(props.isWhite);
   const [board, setBoard] = useState(initialBoard);
   const [selectedPiece, setSelectedPiece] = useState([]);
 
