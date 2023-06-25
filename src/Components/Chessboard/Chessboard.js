@@ -1,19 +1,11 @@
 import { useEffect, useState } from "react";
 import Square from "./Square";
-import { initialBoard } from "./initial-board-state";
 
 function ChessBoard(props) {
-  const [isTurn, setIsTurn] = useState(true);
-  const [isWhite, setIsWhite] = useState(props.isWhite);
-  const [board, setBoard] = useState(initialBoard);
   const [selectedPiece, setSelectedPiece] = useState([]);
 
-  useEffect(() => {
-    // pieceClicked(12, 1);
-  }, []);
-
   const squareClicked = () => {
-    setBoard((prevBoard) => {
+    props.setBoard((prevBoard) => {
       let newBoard = [...prevBoard];
 
       //unselect all other board squares and unset as legal moves.
@@ -29,7 +21,7 @@ function ChessBoard(props) {
   };
 
   const pieceClicked = (selectedPiece, legalMoves) => {
-    setBoard((prevBoard) => {
+    props.setBoard((prevBoard) => {
       let newBoard = [...prevBoard];
 
       //unselect all other board squares and unset as legal moves.
@@ -48,15 +40,15 @@ function ChessBoard(props) {
         newBoard[selectedPiece[0]][selectedPiece[1]].piece,
       ]);
 
-      if (isTurn) {
+      if (props.isTurn) {
         legalMoves.forEach((legalMove) => {
           if (
-            (isWhite && newBoard[legalMove[0]][legalMove[1]].piece?.includes("black")) ||
+            (props.isWhite && newBoard[legalMove[0]][legalMove[1]].piece?.includes("black")) ||
             newBoard[legalMove[0]][legalMove[1]].piece === null
           ) {
             newBoard[legalMove[0]][legalMove[1]].legalMove = true;
           } else if (
-            (!isWhite && newBoard[legalMove[0]][legalMove[1]].piece?.includes("white")) ||
+            (!props.isWhite && newBoard[legalMove[0]][legalMove[1]].piece?.includes("white")) ||
             newBoard[legalMove[0]][legalMove[1]].piece === null
           ) {
             newBoard[legalMove[0]][legalMove[1]].legalMove = true;
@@ -69,7 +61,7 @@ function ChessBoard(props) {
   };
 
   const movePiece = (newLocation) => {
-    setBoard((prevBoard) => {
+    props.setBoard((prevBoard) => {
       let newBoard = [...prevBoard];
 
       //unselect all other board squares and unset as legal moves.
@@ -91,6 +83,15 @@ function ChessBoard(props) {
       //set the old locations piece to null.
       newBoard[selectedPiece[0]][selectedPiece[1]].piece = null;
 
+      const message = {
+        type: "move",
+        roomCode: props.roomCode,
+        boardState: newBoard,
+      };
+
+      props.setIsTurn(false);
+      props.handleSendMessage(message);
+
       return newBoard;
     });
   };
@@ -98,16 +99,18 @@ function ChessBoard(props) {
   const renderBoard = () => {
     let squares = [];
 
-    board.forEach((row) => {
+    props.board.forEach((row) => {
       row.forEach((square) => {
         squares.push(
           <Square
             key={square.rowId + "-" + square.columnId}
-            board={board}
+            board={props.board}
             squareClicked={squareClicked}
             piece={square.piece}
             pieceClicked={pieceClicked}
             movePiece={movePiece}
+            setIsTurn={props.setIsTurn}
+            isWhite={props.isWhite}
             columnId={square.columnId}
             legalMove={square.legalMove}
             rowId={square.rowId}
@@ -123,7 +126,7 @@ function ChessBoard(props) {
     return squares;
   };
 
-  return <div className="chessboard">{renderBoard()}</div>;
+  return <div className={`chessboard ${!props.isWhite && "black"}`}>{renderBoard()}</div>;
 }
 
 export default ChessBoard;

@@ -7,17 +7,31 @@ function WhitePawn(props) {
       return;
     }
 
+    if (!props.isWhite && props.piece?.includes("white")) {
+      return;
+    }
+
+    if (props.isWhite && props.piece?.includes("black")) {
+      return;
+    }
+
     e.stopPropagation();
 
     let legalMoves = [];
+    console.log(props.rowId - 1);
+    console.log(props.columnId - 1);
 
     if (props.piece.includes("white")) {
-      if (props.board[props.rowId - 1][props.columnId - 1].piece?.includes("black")) {
-        legalMoves.push([props.rowId - 1, props.columnId - 1]);
+      if (props.columnId - 1 > -1) {
+        if (props.board[props.rowId - 1][props.columnId - 1].piece?.includes("black")) {
+          legalMoves.push([props.rowId - 1, props.columnId - 1]);
+        }
       }
 
-      if (props.board[props.rowId - 1][props.columnId + 1].piece?.includes("black")) {
-        legalMoves.push([props.rowId - 1, props.columnId + 1]);
+      if (props.columnId + 1 < 8) {
+        if (props.board[props.rowId - 1][props.columnId + 1].piece?.includes("black")) {
+          legalMoves.push([props.rowId - 1, props.columnId + 1]);
+        }
       }
 
       if (props.board[props.rowId - 1][props.columnId].piece === null) {
@@ -32,12 +46,16 @@ function WhitePawn(props) {
         props.pieceClicked([props.rowId, props.columnId], legalMoves);
       }
     } else {
-      if (props.board[props.rowId + 1][props.columnId - 1].piece?.includes("white")) {
-        legalMoves.push([props.rowId + 1, props.columnId - 1]);
+      if (props.columnId - 1 > -1) {
+        if (props.board[props.rowId + 1][props.columnId - 1].piece?.includes("white")) {
+          legalMoves.push([props.rowId + 1, props.columnId - 1]);
+        }
       }
 
-      if (props.board[props.rowId + 1][props.columnId + 1].piece?.includes("white")) {
-        legalMoves.push([props.rowId + 1, props.columnId + 1]);
+      if (props.columnId + 1 < 8) {
+        if (props.board[props.rowId + 1][props.columnId + 1].piece?.includes("white")) {
+          legalMoves.push([props.rowId + 1, props.columnId + 1]);
+        }
       }
 
       if (props.board[props.rowId + 1][props.columnId].piece === null) {

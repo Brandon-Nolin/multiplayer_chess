@@ -7,6 +7,14 @@ function WhiteKnight(props) {
       return;
     }
 
+    if (!props.isWhite && props.piece?.includes("white")) {
+      return;
+    }
+
+    if (props.isWhite && props.piece?.includes("black")) {
+      return;
+    }
+
     e.stopPropagation();
 
     const legalMoves = [];

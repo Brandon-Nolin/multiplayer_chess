@@ -3,6 +3,14 @@ import blackking from "../../Assets/Pieces/blackking.svg";
 
 function WhiteKing(props) {
   function kingClicked(e) {
+    if (!props.isWhite && props.piece?.includes("white")) {
+      return;
+    }
+
+    if (props.isWhite && props.piece?.includes("black")) {
+      return;
+    }
+
     e.stopPropagation();
 
     let legalMoves = [];

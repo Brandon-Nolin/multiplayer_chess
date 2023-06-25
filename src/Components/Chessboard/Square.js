@@ -19,6 +19,7 @@ function Square(props) {
       {props.piece?.includes("pawn") && (
         <Pawn
           board={props.board}
+          isWhite={props.isWhite}
           piece={props.piece}
           pieceClicked={props.pieceClicked}
           legalMove={props.legalMove}
@@ -30,6 +31,7 @@ function Square(props) {
       {props.piece?.includes("rook") && (
         <Rook
           board={props.board}
+          isWhite={props.isWhite}
           piece={props.piece}
           pieceClicked={props.pieceClicked}
           legalMove={props.legalMove}
@@ -40,6 +42,7 @@ function Square(props) {
       {props.piece?.includes("knight") && (
         <Knight
           board={props.board}
+          isWhite={props.isWhite}
           piece={props.piece}
           pieceClicked={props.pieceClicked}
           legalMove={props.legalMove}
@@ -50,6 +53,7 @@ function Square(props) {
       {props.piece?.includes("bishop") && (
         <Bishop
           board={props.board}
+          isWhite={props.isWhite}
           piece={props.piece}
           pieceClicked={props.pieceClicked}
           legalMove={props.legalMove}
@@ -60,6 +64,7 @@ function Square(props) {
       {props.piece?.includes("queen") && (
         <Queen
           board={props.board}
+          isWhite={props.isWhite}
           piece={props.piece}
           pieceClicked={props.pieceClicked}
           legalMove={props.legalMove}
@@ -70,6 +75,7 @@ function Square(props) {
       {props.piece?.includes("king") && (
         <King
           board={props.board}
+          isWhite={props.isWhite}
           piece={props.piece}
           pieceClicked={props.pieceClicked}
           legalMove={props.legalMove}

@@ -4,6 +4,14 @@
   flex-wrap: wrap;
 }
 
+.black {
+  transform: rotate(180deg);
+}
+
+.black .piece {
+  transform: rotate(180deg);
+}
+
 .piece {
   height: 100%;
   display: block;

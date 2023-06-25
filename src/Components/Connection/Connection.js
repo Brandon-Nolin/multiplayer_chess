@@ -8,6 +8,9 @@ export default function Connection(props) {
     const roomCode = Math.random().toString(36).substring(2, 15);
     setRoomCode(roomCode);
     props.setIsWhite(creatorIsWhite);
+    props.setIsTurn(creatorIsWhite);
+    props.setIsCreator(true);
+    props.setRoomCode(roomCode);
 
     props.connectSocket({
       roomID: roomCode,

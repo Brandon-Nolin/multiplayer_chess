@@ -3,17 +3,21 @@ import ChessBoard from "./Components/Chessboard/Chessboard";
 import Connection from "./Components/Connection/Connection";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useState, useCallback, useEffect } from "react";
+import { initialBoard } from "./Components/Chessboard/initial-board-state";
 
 function App() {
+  const [board, setBoard] = useState(initialBoard);
   const [socketUrl, setSocketUrl] = useState(null);
   const [socketParams, setSocketParams] = useState({});
   const [isWhite, setIsWhite] = useState(false);
+  const [isTurn, setIsTurn] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const roomCode = urlParams.get("roomCode");
+  const [roomCode, setRoomCode] = useState(urlParams.get("roomCode"));
+  const [isCreator, setIsCreator] = useState(false);
 
-  const { sendJsonMessage, sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
+  const { sendJsonMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
     queryParams: socketParams,
   });
 
@@ -26,46 +30,71 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (readyState === 1 && roomCode) {
-      setGameStarted(true);
-    }
+    if (lastMessage !== undefined && lastMessage !== null) {
+      if (readyState === 1 && !isCreator && !gameStarted) {
+        setGameStarted(true);
+      }
 
-    if (readyState === 1 && lastMessage?.data === '"Other user connected"') {
-      setGameStarted(true);
+      if (readyState === 1 && lastMessage?.data === '"Other user connected"' && !gameStarted) {
+        const message = {
+          type: "start",
+          roomCode: roomCode,
+        };
+
+        handleSendMessage(message);
+        setGameStarted(true);
+      }
+
+      if (JSON.parse(lastMessage?.data).ownerIsWhite === "true") {
+        setIsTurn(false);
+        setIsWhite(false);
+      } else if (JSON.parse(lastMessage?.data).ownerIsWhite === "false") {
+        setIsTurn(true);
+        setIsWhite(true);
+      }
+
+      if (JSON.parse(lastMessage?.data).boardState) {
+        setBoard(JSON.parse(lastMessage.data).boardState);
+        setIsTurn(true);
+      }
     }
   }, [readyState, lastMessage]);
-
-  useEffect(() => {
-    console.log("test");
-    if (lastMessage !== null) {
-      // Handle the received message
-      console.log("Received message:", lastMessage.data);
-    }
-  }, [lastMessage]);
 
   const connectSocket = (params) => {
     setSocketUrl("wss://32yizcqo3f.execute-api.us-east-1.amazonaws.com/production");
     setSocketParams(params);
   };
 
-  const handleClickSendMessage = () => {
-    sendJsonMessage({ "action": "sendMessage", "message": "" });
-
-    console.log(lastMessage?.data);
+  const handleSendMessage = (message) => {
+    sendJsonMessage({ "action": "sendMessage", "message": message });
   };
 
   return (
     <>
-      {!roomCode && (
+      {!urlParams.get("roomCode") && (
         <Connection
           sendJsonMessage={sendJsonMessage}
           setSocketUrl={setSocketUrl}
           setSocketParams={setSocketParams}
           connectSocket={connectSocket}
           setIsWhite={setIsWhite}
+          handleSendMessage={handleSendMessage}
+          setIsCreator={setIsCreator}
+          setRoomCode={setRoomCode}
+          setIsTurn={setIsTurn}
         />
       )}
-      {gameStarted && <ChessBoard isWhite={isWhite} />}
+      {gameStarted && (
+        <ChessBoard
+          board={board}
+          setBoard={setBoard}
+          roomCode={roomCode}
+          isWhite={isWhite}
+          handleSendMessage={handleSendMessage}
+          isTurn={isTurn}
+          setIsTurn={setIsTurn}
+        />
+      )}
       <div>
         SVG Chess Pieces - By{" "}
         <a href="//commons.wikimedia.org/wiki/User:Cburnett" title="User:Cburnett">
@@ -84,8 +113,6 @@ function App() {
         </a>
         , <a href="https://commons.wikimedia.org/w/index.php?curid=1499806">Link</a>
       </div>
-
-      {/* <button onClick={handleClickSendMessage}>Socket</button> */}
     </>
   );
 }
