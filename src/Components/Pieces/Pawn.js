@@ -18,9 +18,6 @@ function WhitePawn(props) {
     e.stopPropagation();
 
     let legalMoves = [];
-    console.log(props.rowId - 1);
-    console.log(props.columnId - 1);
-
     if (props.piece.includes("white")) {
       if (props.columnId - 1 > -1) {
         if (props.board[props.rowId - 1][props.columnId - 1].piece?.includes("black")) {
