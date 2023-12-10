@@ -46,7 +46,6 @@ function ChessBoard(props) {
             (props.isWhite && newBoard[legalMove[0]][legalMove[1]].piece?.includes("black")) ||
             newBoard[legalMove[0]][legalMove[1]].piece === null
           ) {
-            // legalMoveIsCheck(selectedPiece, legalMove, newBoard);
             if (!legalMoveIsCheck(selectedPiece, legalMove, newBoard)) {
               newBoard[legalMove[0]][legalMove[1]].legalMove = true;
             }
@@ -54,7 +53,6 @@ function ChessBoard(props) {
             (!props.isWhite && newBoard[legalMove[0]][legalMove[1]].piece?.includes("white")) ||
             newBoard[legalMove[0]][legalMove[1]].piece === null
           ) {
-            // legalMoveIsCheck(selectedPiece, legalMove, newBoard);
             if (!legalMoveIsCheck(selectedPiece, legalMove, newBoard)) {
               newBoard[legalMove[0]][legalMove[1]].legalMove = true;
             }
@@ -75,35 +73,405 @@ function ChessBoard(props) {
     let futureBoard = JSON.parse(JSON.stringify(board));
     let king = props.isWhite ? "white-king" : "black-king";
 
-    futureBoard[newLocation[0]][newLocation[1]].piece = board[selectedPiece[0]][selectedPiece[1]].piece;
+    if (newLocation[0] <= 7 && newLocation[0] >= 0 && newLocation[1] <= 7 && newLocation[1] >= 0) {
+      futureBoard[newLocation[0]][newLocation[1]].piece = board[selectedPiece[0]][selectedPiece[1]].piece;
 
-    futureBoard[selectedPiece[0]][selectedPiece[1]].piece = null;
+      futureBoard[selectedPiece[0]][selectedPiece[1]].piece = null;
+
+      if (!board[newLocation[0]][newLocation[1]]?.piece?.includes(props.isWhite ? "white" : "black")) {
+        for (let row = 0; row < 8; row++) {
+          for (let col = 0; col < 8; col++) {
+            const square = futureBoard[row][col];
+            if (square.piece?.includes(props.isWhite ? "black" : "white")) {
+              //see if opponent pawns will check king
+              if (square.piece?.includes("pawn")) {
+                if (props.isWhite) {
+                  if (square.rowId + 1 < 8 && square.columnId + 1 < 8) {
+                    if (futureBoard[square.rowId + 1][square.columnId + 1]?.piece === king) {
+                      return true;
+                    }
+                  }
+                  if (square.rowId + 1 < 8 && square.columnId - 1 > -1) {
+                    if (futureBoard[square.rowId + 1][square.columnId - 1]?.piece === king) {
+                      return true;
+                    }
+                  }
+                } else {
+                  if (square.rowId - 1 > -1 && square.columnId + 1 < 8) {
+                    if (futureBoard[square.rowId - 1][square.columnId + 1]?.piece === king) {
+                      return true;
+                    }
+                  }
+                  if (square.rowId - 1 > -1 && square.columnId - 1 > -1) {
+                    if (futureBoard[square.rowId - 1][square.columnId - 1]?.piece === king) {
+                      return true;
+                    }
+                  }
+                }
+              }
+            }
+
+            //see if opponenet king will check king
+            if (square.piece?.includes(props.isWhite ? "black-king" : "white-king")) {
+              const directions = [
+                [1, 0],
+                [1, 1],
+                [0, 1],
+                [-1, 1],
+                [-1, 0],
+                [-1, -1],
+                [0, -1],
+                [1, -1],
+              ];
+
+              for (const [dx, dy] of directions) {
+                const newRowId = square.rowId + dx;
+                const newColumnId = square.columnId + dy;
+
+                if (futureBoard?.[newRowId]?.[newColumnId]?.piece === king) {
+                  return true;
+                }
+              }
+            }
+
+            //see if opponent knight will check king.
+            if (square.piece?.includes(props.isWhite ? "black-knight" : "white-knight")) {
+              const knightMoves = [
+                [2, 1],
+                [1, 2],
+                [-1, 2],
+                [-2, 1],
+                [-2, -1],
+                [-1, -2],
+                [1, -2],
+                [2, -1],
+              ];
+
+              for (const [dx, dy] of knightMoves) {
+                const newRowId = square.rowId + dx;
+                const newColumnId = square.columnId + dy;
+
+                if (futureBoard?.[newRowId]?.[newColumnId]?.piece === king) {
+                  return true;
+                }
+              }
+            }
+
+            //see if opponent bishops will check king
+            if (square.piece?.includes(props.isWhite ? "black-bishop" : "white-bishop")) {
+              const bishopDirections = [
+                [-1, -1], // top left
+                [-1, 1], // top right
+                [1, 1], // bottom right
+                [1, -1], // bottom left
+              ];
+
+              for (const [dx, dy] of bishopDirections) {
+                let newRowId = square.rowId;
+                let newColumnId = square.columnId;
+
+                while (newRowId > 0 && newRowId <= 7 && newColumnId > 0 && newColumnId <= 7) {
+                  if (futureBoard[newRowId][newColumnId]?.piece === king) {
+                    return true;
+                  }
+
+                  if (
+                    futureBoard[newRowId][newColumnId]?.piece !== null &&
+                    futureBoard[newRowId][newColumnId]?.piece !== square.piece
+                  ) {
+                    break;
+                  }
+
+                  newRowId += dx;
+                  newColumnId += dy;
+                }
+              }
+            }
+
+            // see if opponent rooks will check king
+            if (square.piece?.includes(props.isWhite ? "black-rook" : "white-rook")) {
+              const rookDirections = [
+                [0, -1], // left
+                [0, 1], // right
+                [-1, 0], // up
+                [1, 0], // down
+              ];
+
+              for (const [dx, dy] of rookDirections) {
+                let newRowId = square.rowId;
+                let newColumnId = square.columnId;
+
+                while (newRowId > 0 && newRowId <= 7 && newColumnId > 0 && newColumnId <= 7) {
+                  if (futureBoard[newRowId][newColumnId]?.piece === king) {
+                    return true;
+                  }
+
+                  if (
+                    futureBoard[newRowId][newColumnId]?.piece !== null &&
+                    futureBoard[newRowId][newColumnId]?.piece !== square.piece
+                  ) {
+                    break;
+                  }
+
+                  newRowId += dx;
+                  newColumnId += dy;
+                }
+              }
+            }
+
+            // see if opponent queen will check king.
+            if (square.piece?.includes(props.isWhite ? "black-queen" : "white-queen")) {
+              const queenDirections = [
+                [-1, -1], // top-left
+                [-1, 0], // top
+                [-1, 1], // top-right
+                [0, -1], // left
+                [0, 1], // right
+                [1, -1], // bottom-left
+                [1, 0], // bottom
+                [1, 1], // bottom-right
+              ];
+
+              for (const [dx, dy] of queenDirections) {
+                let newRowId = square.rowId;
+                let newColumnId = square.columnId;
+
+                while (newRowId > 0 && newRowId <= 7 && newColumnId > 0 && newColumnId <= 7) {
+                  if (futureBoard[newRowId][newColumnId]?.piece === king) {
+                    return true;
+                  }
+
+                  if (
+                    futureBoard[newRowId][newColumnId]?.piece !== null &&
+                    futureBoard[newRowId][newColumnId]?.piece !== square.piece
+                  ) {
+                    break;
+                  }
+
+                  newRowId += dx;
+                  newColumnId += dy;
+                }
+              }
+            }
+          }
+        }
+      } else {
+        return true;
+      }
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  /**
+   * See if there are any remaining legal moves that can be taken.
+   */
+  const noLegalMoves = () => {
+    for (let row = 0; row < 8; row++) {
+      for (let col = 0; col < 8; col++) {
+        const square = props.board[row][col];
+        if (square.piece?.includes(props.isWhite ? "white" : "black")) {
+          let forward = props.isWhite ? -1 : 1;
+
+          //pawn moves
+          if (square.piece?.includes("pawn")) {
+            if (col - 1 > -1) {
+              if (
+                !legalMoveIsCheck([row, col], [row + forward, col - 1], props.board) &&
+                props.board[row + forward][col - 1]?.piece !== null
+              ) {
+                return false;
+              }
+            }
+
+            if (col + 1 < 8) {
+              if (
+                !legalMoveIsCheck([row, col], [row + forward, col + 1], props.board) &&
+                props.board[(row + forward, col + 1)].piece !== null
+              ) {
+                return false;
+              }
+            }
+
+            if (props.board[row + forward][col]?.piece === null) {
+              if (!legalMoveIsCheck([row, col], [row + forward, col], props.board)) {
+                return false;
+              }
+
+              if (props.board[row + forward * 2][col]?.piece === null) {
+                if (!legalMoveIsCheck([row, col], [row + forward * 2, col], props.board)) {
+                  return false;
+                }
+              }
+            }
+          }
+
+          //king moves
+          if (square.piece?.includes(props.isWhite ? "white-king" : "black-king")) {
+            const directions = [
+              [1, 0],
+              [1, 1],
+              [0, 1],
+              [-1, 1],
+              [-1, 0],
+              [-1, -1],
+              [0, -1],
+              [1, -1],
+            ];
+
+            for (const [dx, dy] of directions) {
+              if (!legalMoveIsCheck([row, col], [row + dx, col + dy], props.board)) {
+                return false;
+              }
+            }
+          }
+
+          //knight moves
+          if (square.piece?.includes(props.isWhite ? "white-knight" : "black-knight")) {
+            const knightMoves = [
+              [2, 1],
+              [1, 2],
+              [-1, 2],
+              [-2, 1],
+              [-2, -1],
+              [-1, -2],
+              [1, -2],
+              [2, -1],
+            ];
+
+            for (const [dx, dy] of knightMoves) {
+              if (!legalMoveIsCheck([row, col], [row + dx, col + dy], props.board)) {
+                return false;
+              }
+            }
+          }
+
+          //bishop moves
+          if (square.piece?.includes(props.isWhite ? "white-bishop" : "black-bishop")) {
+            const directions = [
+              [-1, -1],
+              [-1, 1],
+              [1, 1],
+              [1, -1],
+            ];
+
+            for (const [dx, dy] of directions) {
+              let rowId = square.rowId + dx;
+              let columnId = square.columnId + dy;
+
+              while (rowId > 0 && rowId < 8 && columnId > 0 && columnId < 8) {
+                if (isOwnPiece([rowId, columnId])) {
+                  break;
+                }
+
+                if (!legalMoveIsCheck([row, col], [rowId, columnId], props.board)) {
+                  return false;
+                }
+
+                rowId += dx;
+                columnId += dy;
+              }
+            }
+          }
+
+          //rook moves
+          if (square.piece?.includes(props.isWhite ? "white-rook" : "black-rook")) {
+            const directions = [
+              [-1, 0],
+              [1, 0],
+              [0, -1],
+              [0, 1],
+            ];
+
+            for (const [dx, dy] of directions) {
+              let rowId = square.rowId + dx;
+              let columnId = square.columnId + dy;
+
+              while (rowId > 0 && rowId < 8 && columnId > 0 && columnId < 8) {
+                if (isOwnPiece([rowId, columnId])) {
+                  break;
+                }
+
+                if (!legalMoveIsCheck([row, col], [rowId, columnId], props.board)) {
+                  return false;
+                }
+
+                rowId += dx;
+                columnId += dy;
+              }
+            }
+          }
+
+          //queen moves
+          if (square.piece?.includes(props.isWhite ? "white-queen" : "black-queen")) {
+            const directions = [
+              [-1, -1],
+              [-1, 1],
+              [1, 1],
+              [1, -1],
+              [-1, 0],
+              [1, 0],
+              [0, -1],
+              [0, 1],
+            ];
+
+            for (const [dx, dy] of directions) {
+              let rowId = square.rowId + dx;
+              let columnId = square.columnId + dy;
+
+              while (rowId > 0 && rowId < 8 && columnId > 0 && columnId < 8) {
+                if (isOwnPiece([rowId, columnId])) {
+                  break;
+                }
+
+                if (!legalMoveIsCheck([row, col], [rowId, columnId], props.board)) {
+                  return false;
+                }
+
+                rowId += dx;
+                columnId += dy;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return true;
+  };
+
+  /**
+   * Loops through the current state of the board to see if the king is currently in check.
+   */
+  const isInCheck = (board) => {
+    let king = props.isWhite ? "white-king" : "black-king";
 
     for (let row = 0; row < 8; row++) {
       for (let col = 0; col < 8; col++) {
-        const square = futureBoard[row][col];
+        const square = board[row][col];
         if (square.piece?.includes(props.isWhite ? "black" : "white")) {
           //see if opponent pawns will check king
           if (square.piece?.includes("pawn")) {
             if (props.isWhite) {
               if (square.rowId + 1 < 8 && square.columnId + 1 < 8) {
-                if (futureBoard[square.rowId + 1][square.columnId + 1]?.piece === king) {
+                if (board[square.rowId + 1][square.columnId + 1]?.piece === king) {
                   return true;
                 }
               }
               if (square.rowId + 1 < 8 && square.columnId - 1 > -1) {
-                if (futureBoard[square.rowId + 1][square.columnId - 1]?.piece === king) {
+                if (board[square.rowId + 1][square.columnId - 1]?.piece === king) {
                   return true;
                 }
               }
             } else {
               if (square.rowId - 1 > -1 && square.columnId + 1 < 8) {
-                if (futureBoard[square.rowId - 1][square.columnId + 1]?.piece === king) {
+                if (board[square.rowId - 1][square.columnId + 1]?.piece === king) {
                   return true;
                 }
               }
               if (square.rowId - 1 > -1 && square.columnId - 1 > -1) {
-                if (futureBoard[square.rowId - 1][square.columnId - 1]?.piece === king) {
+                if (board[square.rowId - 1][square.columnId - 1]?.piece === king) {
                   return true;
                 }
               }
@@ -111,252 +479,140 @@ function ChessBoard(props) {
           }
         }
 
-        //see if opponent bishops will check king
+        // see if opponent king will check king
+        if (square.piece?.includes(props.isWhite ? "black-king" : "white-king")) {
+          const kingDirections = [
+            [1, 0], // down
+            [1, 1], // down-right
+            [0, 1], // right
+            [-1, 1], // up-right
+            [-1, 0], // up
+            [-1, -1], // up-left
+            [0, -1], // left
+            [1, -1], // down-left
+          ];
+
+          for (const [dx, dy] of kingDirections) {
+            const newRowId = square.rowId + dx;
+            const newColumnId = square.columnId + dy;
+
+            if (newRowId >= 0 && newRowId <= 7 && newColumnId >= 0 && newColumnId <= 7) {
+              if (board[newRowId][newColumnId]?.piece === king) {
+                return true;
+              }
+            }
+          }
+        }
+
+        // see if opponent knight will check king
+        if (square.piece?.includes(props.isWhite ? "black-knight" : "white-knight")) {
+          const knightMoves = [
+            [2, 1],
+            [1, 2],
+            [-1, 2],
+            [-2, 1],
+            [-2, -1],
+            [-1, -2],
+            [1, -2],
+            [2, -1],
+          ];
+
+          for (const [dx, dy] of knightMoves) {
+            const newRowId = square.rowId + dx;
+            const newColumnId = square.columnId + dy;
+
+            if (newRowId >= 0 && newRowId <= 7 && newColumnId >= 0 && newColumnId <= 7) {
+              if (board[newRowId][newColumnId]?.piece === king) {
+                return true;
+              }
+            }
+          }
+        }
+
+        // see if opponent bishops will check king
         if (square.piece?.includes(props.isWhite ? "black-bishop" : "white-bishop")) {
-          let rowId = square.rowId;
-          let columnId = square.columnId;
+          const bishopDirections = [
+            [-1, -1], // top-left
+            [-1, 1], // top-right
+            [1, 1], // bottom-right
+            [1, -1], // bottom-left
+          ];
 
-          while (rowId > 0 && columnId > 0) {
-            rowId--;
-            columnId--;
+          for (const [dx, dy] of bishopDirections) {
+            let newRowId = square.rowId + dx;
+            let newColumnId = square.columnId + dy;
 
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
+            while (newRowId >= 0 && newRowId <= 7 && newColumnId >= 0 && newColumnId <= 7) {
+              newRowId += dx;
+              newColumnId += dy;
 
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
-            }
-          }
+              if (board[newRowId]?.[newColumnId]?.piece === king) {
+                return true;
+              }
 
-          rowId = square.rowId;
-          columnId = square.columnId;
-
-          while (rowId > 0 && columnId < 7) {
-            rowId--;
-            columnId++;
-
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
-
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
-            }
-          }
-
-          rowId = square.rowId;
-          columnId = square.columnId;
-
-          while (rowId < 7 && columnId < 7) {
-            rowId++;
-            columnId++;
-
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
-
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
-            }
-          }
-
-          rowId = square.rowId;
-          columnId = square.columnId;
-
-          while (rowId < 7 && columnId > 0) {
-            rowId++;
-            columnId--;
-
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
-
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
+              if (board[newRowId]?.[newColumnId]?.piece !== null) {
+                break;
+              }
             }
           }
         }
 
-        //see if opponent rooks will check king
+        // see if opponent rooks will check king
         if (square.piece?.includes(props.isWhite ? "black-rook" : "white-rook")) {
-          let rowId = square.rowId;
-          let columnId = square.columnId;
+          const rookDirections = [
+            [0, -1], // left
+            [0, 1], // right
+            [-1, 0], // up
+            [1, 0], // down
+          ];
 
-          while (rowId > 0) {
-            rowId--;
+          for (const [dx, dy] of rookDirections) {
+            let newRowId = square.rowId + dx;
+            let newColumnId = square.columnId + dy;
 
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
+            while (newRowId >= 0 && newRowId <= 7 && newColumnId >= 0 && newColumnId <= 7) {
+              newRowId += dx;
+              newColumnId += dy;
 
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
-            }
-          }
+              if (board[newRowId]?.[newColumnId]?.piece === king) {
+                return true;
+              }
 
-          rowId = square.rowId;
-
-          while (rowId < 7) {
-            rowId++;
-
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
-
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
-            }
-          }
-
-          rowId = square.rowId;
-
-          while (columnId < 7) {
-            columnId++;
-
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
-
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
-            }
-          }
-
-          columnId = square.columnId;
-
-          while (columnId > 0) {
-            columnId--;
-
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
-
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
+              if (board[newRowId]?.[newColumnId]?.piece !== null) {
+                break;
+              }
             }
           }
         }
 
-        //see if opponent queen will check king.
+        // see if opponent queen will check king
         if (square.piece?.includes(props.isWhite ? "black-queen" : "white-queen")) {
-          let rowId = square.rowId;
-          let columnId = square.columnId;
+          const queenDirections = [
+            [1, 1], // diagonal down-right
+            [-1, -1], // diagonal up-left
+            [1, -1], // diagonal down-left
+            [-1, 1], // diagonal up-right
+            [0, 1], // right
+            [0, -1], // left
+            [1, 0], // down
+            [-1, 0], // up
+          ];
 
-          while (rowId > 0 && columnId > 0) {
-            rowId--;
-            columnId--;
+          for (const [dx, dy] of queenDirections) {
+            let newRowId = square.rowId + dx;
+            let newColumnId = square.columnId + dy;
 
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
+            while (newRowId >= 0 && newRowId <= 7 && newColumnId >= 0 && newColumnId <= 7) {
+              newRowId += dx;
+              newColumnId += dy;
 
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
-            }
-          }
+              if (board[newRowId]?.[newColumnId]?.piece === king) {
+                return true;
+              }
 
-          rowId = square.rowId;
-          columnId = square.columnId;
-
-          while (rowId > 0 && columnId < 7) {
-            rowId--;
-            columnId++;
-
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
-
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
-            }
-          }
-
-          rowId = square.rowId;
-          columnId = square.columnId;
-
-          while (rowId < 7 && columnId < 7) {
-            rowId++;
-            columnId++;
-
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
-
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
-            }
-          }
-
-          rowId = square.rowId;
-          columnId = square.columnId;
-
-          while (rowId < 7 && columnId > 0) {
-            rowId++;
-            columnId--;
-
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
-
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
-            }
-          }
-          rowId = square.rowId;
-          columnId = square.columnId;
-
-          while (rowId > 0) {
-            rowId--;
-
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
-
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
-            }
-          }
-
-          rowId = square.rowId;
-
-          while (rowId < 7) {
-            rowId++;
-
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
-
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
-            }
-          }
-
-          rowId = square.rowId;
-
-          while (columnId < 7) {
-            columnId++;
-
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
-
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
-            }
-          }
-
-          columnId = square.columnId;
-
-          while (columnId > 0) {
-            columnId--;
-
-            if (futureBoard[rowId][columnId]?.piece === king) {
-              return true;
-            }
-
-            if(futureBoard[rowId][columnId].piece !== null){
-              break
+              if (board[newRowId]?.[newColumnId]?.piece !== null) {
+                break;
+              }
             }
           }
         }
@@ -365,6 +621,23 @@ function ChessBoard(props) {
 
     return false;
   };
+
+  const isOwnPiece = (location) => {
+    if (props.board[location[0]][location[1]]?.piece?.includes(props.isWhite ? "white" : "black")) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    if (isInCheck(props.board)) {
+      //if the player starts their turn in check, see if there are any remaining legal moves. if there are not, they lose.
+      if (noLegalMoves()) {
+        props.setIsGameOver(true);
+      }
+    }
+  }, [props.board]);
 
   const movePiece = (newLocation) => {
     props.setBoard((prevBoard) => {

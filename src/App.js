@@ -16,6 +16,7 @@ function App() {
   const urlParams = new URLSearchParams(queryString);
   const [roomCode, setRoomCode] = useState(urlParams.get("roomCode"));
   const [isCreator, setIsCreator] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
     queryParams: socketParams,
@@ -70,7 +71,7 @@ function App() {
   };
 
   return (
-    <>
+    <div style={{backgroundColor: isGameOver ? "red" : "green"}}>
       {!urlParams.get("roomCode") && (
         <Connection
           sendJsonMessage={sendJsonMessage}
@@ -93,6 +94,7 @@ function App() {
           handleSendMessage={handleSendMessage}
           isTurn={isTurn}
           setIsTurn={setIsTurn}
+          setIsGameOver={setIsGameOver}
         />
       )}
       <div>
@@ -113,7 +115,7 @@ function App() {
         </a>
         , <a href="https://commons.wikimedia.org/w/index.php?curid=1499806">Link</a>
       </div>
-    </>
+    </div>
   );
 }
 
