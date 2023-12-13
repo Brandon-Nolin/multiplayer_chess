@@ -170,14 +170,14 @@ function ChessBoard(props) {
                 let newRowId = square.rowId;
                 let newColumnId = square.columnId;
 
-                while (newRowId > 0 && newRowId <= 7 && newColumnId > 0 && newColumnId <= 7) {
-                  if (futureBoard[newRowId][newColumnId]?.piece === king) {
+                while (newRowId >= 0 && newRowId <= 7 && newColumnId >= 0 && newColumnId <= 7) {
+                  if (futureBoard[newRowId]?.[newColumnId]?.piece === king) {
                     return true;
                   }
 
                   if (
-                    futureBoard[newRowId][newColumnId]?.piece !== null &&
-                    futureBoard[newRowId][newColumnId]?.piece !== square.piece
+                    futureBoard[newRowId]?.[newColumnId]?.piece !== null &&
+                    futureBoard[newRowId]?.[newColumnId]?.piece !== square.piece
                   ) {
                     break;
                   }
@@ -201,14 +201,14 @@ function ChessBoard(props) {
                 let newRowId = square.rowId;
                 let newColumnId = square.columnId;
 
-                while (newRowId > 0 && newRowId <= 7 && newColumnId > 0 && newColumnId <= 7) {
-                  if (futureBoard[newRowId][newColumnId]?.piece === king) {
+                while (newRowId >= 0 && newRowId <= 7 && newColumnId >= 0 && newColumnId <= 7) {
+                  if (futureBoard[newRowId]?.[newColumnId]?.piece === king) {
                     return true;
                   }
 
                   if (
-                    futureBoard[newRowId][newColumnId]?.piece !== null &&
-                    futureBoard[newRowId][newColumnId]?.piece !== square.piece
+                    futureBoard[newRowId]?.[newColumnId]?.piece !== null &&
+                    futureBoard[newRowId]?.[newColumnId]?.piece !== square.piece
                   ) {
                     break;
                   }
@@ -236,14 +236,14 @@ function ChessBoard(props) {
                 let newRowId = square.rowId;
                 let newColumnId = square.columnId;
 
-                while (newRowId > 0 && newRowId <= 7 && newColumnId > 0 && newColumnId <= 7) {
+                while (newRowId >= 0 && newRowId <= 7 && newColumnId >= 0 && newColumnId <= 7) {
                   if (futureBoard[newRowId][newColumnId]?.piece === king) {
                     return true;
                   }
 
                   if (
-                    futureBoard[newRowId][newColumnId]?.piece !== null &&
-                    futureBoard[newRowId][newColumnId]?.piece !== square.piece
+                    futureBoard[newRowId]?.[newColumnId]?.piece !== null &&
+                    futureBoard[newRowId]?.[newColumnId]?.piece !== square.piece
                   ) {
                     break;
                   }

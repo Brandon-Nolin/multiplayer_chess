@@ -1,7 +1,7 @@
 import whiteknight from "../../Assets/Pieces/whiteknight.svg";
 import blackknight from "../../Assets/Pieces/blackknight.svg";
 
-function WhiteKnight(props) {
+function Knight(props) {
   function knightClicked(e) {
     if (props.legalMove) {
       return;
@@ -65,4 +65,4 @@ function WhiteKnight(props) {
   );
 }
 
-export default WhiteKnight;
+export default Knight;

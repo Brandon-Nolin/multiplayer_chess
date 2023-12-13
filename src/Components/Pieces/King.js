@@ -1,7 +1,7 @@
 import whiteking from "../../Assets/Pieces/whiteking.svg";
 import blackking from "../../Assets/Pieces/blackking.svg";
 
-function WhiteKing(props) {
+function King(props) {
   function kingClicked(e) {
     if (!props.isWhite && props.piece?.includes("white")) {
       return;
@@ -15,36 +15,12 @@ function WhiteKing(props) {
 
     let legalMoves = [];
 
-    if (props.rowId - 1 > -1 && props.columnId - 1 > -1) {
-      legalMoves.push([props.rowId - 1, props.columnId - 1]);
-    }
-
-    if (props.rowId - 1 > -1) {
-      legalMoves.push([props.rowId - 1, props.columnId]);
-    }
-
-    if (props.rowId - 1 > -1 && props.columnId + 1 < 8) {
-      legalMoves.push([props.rowId - 1, props.columnId + 1]);
-    }
-
-    if (props.columnId - 1 > -1) {
-      legalMoves.push([props.rowId, props.columnId - 1]);
-    }
-
-    if (props.columnId + 1 < 8) {
-      legalMoves.push([props.rowId, props.columnId + 1]);
-    }
-
-    if (props.rowId + 1 < 8 && props.columnId - 1 > -1) {
-      legalMoves.push([props.rowId + 1, props.columnId - 1]);
-    }
-
-    if (props.rowId + 1 < 8) {
-      legalMoves.push([props.rowId + 1, props.columnId]);
-    }
-
-    if (props.rowId + 1 < 8 && props.columnId + 1 < 8) {
-      legalMoves.push([props.rowId + 1, props.columnId + 1]);
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        if (!(i === 0 && j === 0) && props.rowId + i >= 0 && props.rowId + i < 8 && props.columnId + j >= 0 && props.columnId + j < 8) {
+          legalMoves.push([props.rowId + i, props.columnId + j]);
+        }
+      }
     }
 
     props.pieceClicked([props.rowId, props.columnId], legalMoves);
@@ -61,4 +37,4 @@ function WhiteKing(props) {
   );
 }
 
-export default WhiteKing;
+export default King;

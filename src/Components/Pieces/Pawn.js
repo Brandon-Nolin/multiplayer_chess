@@ -1,7 +1,7 @@
 import whitepawn from "../../Assets/Pieces/whitepawn.svg";
 import blackpawn from "../../Assets/Pieces/blackpawn.svg";
 
-function WhitePawn(props) {
+function Pawn(props) {
   function pawnClicked(e) {
     if (props.legalMove) {
       return;
@@ -79,4 +79,4 @@ function WhitePawn(props) {
   );
 }
 
-export default WhitePawn;
+export default Pawn;

@@ -1,7 +1,7 @@
 import whiterook from "../../Assets/Pieces/whiterook.svg";
 import blackrook from "../../Assets/Pieces/blackrook.svg";
 
-function WhiteRook(props) {
+function Rook(props) {
   function rookClicked(e) {
     if (props.legalMove) {
       return;
@@ -19,52 +19,30 @@ function WhiteRook(props) {
 
     let legalMoves = [];
 
-    let row = props.rowId;
-    let column = props.columnId;
+    const directions = [
+      [-1, 0], // up
+      [1, 0],  // down
+      [0, 1],  // right
+      [0, -1]  // left
+    ];
+    
+    for (const direction of directions) {
+      let [row, column] = [props.rowId, props.columnId];
+      const [rowIncrement, columnIncrement] = direction;
+    
+      while (row >= 0 && row <= 7 && column >= 0 && column <= 7) {
+        legalMoves.push([row, column]);
 
-    while (row > 0) {
-      row--;
+        row += rowIncrement;
+        column += columnIncrement;
+    
+        if (props.board[row]?.[column]?.piece !== null) {
+          if(row >= 0 && row <= 7 && column >= 0 && column <= 7){
+            legalMoves.push([row, column]);
+          }
 
-      legalMoves.push([row, props.columnId]);
-
-      if (props.board[row][props.columnId].piece !== null) {
-        break;
-      }
-    }
-
-    row = props.rowId;
-
-    while (row < 7) {
-      row++;
-
-      legalMoves.push([row, props.columnId]);
-
-      if (props.board[row][props.columnId].piece !== null) {
-        break;
-      }
-    }
-
-    row = props.rowId;
-
-    while (column < 7) {
-      column++;
-
-      legalMoves.push([props.rowId, column]);
-
-      if (props.board[props.rowId][column].piece !== null) {
-        break;
-      }
-    }
-
-    column = props.columnId;
-
-    while (column > 0) {
-      column--;
-
-      legalMoves.push([props.rowId, column]);
-
-      if (props.board[props.rowId][column].piece !== null) {
-        break;
+          break;
+        }
       }
     }
 
@@ -82,4 +60,4 @@ function WhiteRook(props) {
   );
 }
 
-export default WhiteRook;
+export default Rook;

@@ -1,7 +1,7 @@
 import whitebishop from "../../Assets/Pieces/whitebishop.svg";
 import blackbishop from "../../Assets/Pieces/blackbishop.svg";
 
-function WhiteBishop(props) {
+function Bishop(props) {
   function bishopClicked(e) {
     if (props.legalMove) {
       return;
@@ -19,59 +19,30 @@ function WhiteBishop(props) {
 
     let legalMoves = [];
 
-    let row = props.rowId;
-    let column = props.columnId;
+    const directions = [
+      [-1, -1], // top-left
+      [-1, 1],  // top-right
+      [1, 1],   // bottom-right
+      [1, -1]   // bottom-left
+    ];
+    
+    for (const direction of directions) {
+      let [row, column] = [props.rowId, props.columnId];
+      const [rowIncrement, columnIncrement] = direction;
+    
+      while (row >= 0 && row <= 7 && column >= 0 && column <= 7) {
+        legalMoves.push([row, column]);
 
-    while (row > 0 && column > 0) {
-      row--;
-      column--;
+        row += rowIncrement;
+        column += columnIncrement;
+    
+        if (props.board[row]?.[column]?.piece !== null) {
+          if(row >= 0 && row <= 7 && column >= 0 && column <= 7){
+            legalMoves.push([row, column]);
+          }
 
-      legalMoves.push([row, column]);
-
-      if (props.board[row][column].piece !== null) {
-        break;
-      }
-    }
-
-    row = props.rowId;
-    column = props.columnId;
-
-    while (row > 0 && column < 7) {
-      row--;
-      column++;
-
-      legalMoves.push([row, column]);
-
-      if (props.board[row][column].piece !== null) {
-        break;
-      }
-    }
-
-    row = props.rowId;
-    column = props.columnId;
-
-    while (row < 7 && column < 7) {
-      row++;
-      column++;
-
-      legalMoves.push([row, column]);
-
-      if (props.board[row][column].piece !== null) {
-        break;
-      }
-    }
-
-    row = props.rowId;
-    column = props.columnId;
-
-    while (row < 7 && column > 0) {
-      row++;
-      column--;
-
-      legalMoves.push([row, column]);
-
-      if (props.board[row][column].piece !== null) {
-        break;
+          break;
+        }
       }
     }
 
@@ -89,4 +60,4 @@ function WhiteBishop(props) {
   );
 }
 
-export default WhiteBishop;
+export default Bishop;
