@@ -694,7 +694,7 @@ function ChessBoard(props) {
             legalMove={square.legalMove}
             rowId={square.rowId}
             pawnHasMoved={square.pawnHasMoved}
-            classes={`square ${square.color} ${square.legalMove && "movable"} ${
+            classes={`w-full h-full mt-auto min-h-20 ${square.color} ${square.legalMove && "movable"} ${
               square.selected && "selected"
             }`}
           />
@@ -705,7 +705,7 @@ function ChessBoard(props) {
     return squares;
   };
 
-  return <div className={`chessboard ${!props.isWhite && "black"}`}>{renderBoard()}</div>;
+  return <div className={`board grid grid-cols-8 grid-rows-8 h-[84%] rounded-sm overflow-hidden shadow-lg ${!props.isWhite && "black"}`}>{renderBoard()}</div>;
 }
 
 export default ChessBoard;

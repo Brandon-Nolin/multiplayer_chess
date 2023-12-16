@@ -1,9 +1,9 @@
-import King from "../Pieces/King";
-import Queen from "../Pieces/Queen";
-import Bishop from "../Pieces/Bishop";
-import Rook from "../Pieces/Rook";
-import Knight from "../Pieces/Knight";
-import Pawn from "../Pieces/Pawn";
+import King from "./Pieces/King";
+import Queen from "./Pieces/Queen";
+import Bishop from "./Pieces/Bishop";
+import Rook from "./Pieces/Rook";
+import Knight from "./Pieces/Knight";
+import Pawn from "./Pieces/Pawn";
 
 function Square(props) {
   function squareClicked() {

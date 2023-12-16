@@ -1,15 +1,17 @@
 import "./App.css";
-import ChessBoard from "./Components/Chessboard/Chessboard";
+// import ChessBoard from "./Components/BoardLayout/Chessboard/Chessboard";
+import BoardLayout from "./Components/BoardLayout/BoardLayout";
+import BoardSidebar from "./Components/BoardSidebar/BoardSidebar";
 import Connection from "./Components/Connection/Connection";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useState, useCallback, useEffect } from "react";
-import { initialBoard } from "./Components/Chessboard/initial-board-state";
+import { initialBoard } from "./Components/BoardLayout/Chessboard/initial-board-state";
 
 function App() {
   const [board, setBoard] = useState(initialBoard);
   const [socketUrl, setSocketUrl] = useState(null);
   const [socketParams, setSocketParams] = useState({});
-  const [isWhite, setIsWhite] = useState(false);
+  const [isWhite, setIsWhite] = useState(true);
   const [isTurn, setIsTurn] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const queryString = window.location.search;
@@ -71,8 +73,8 @@ function App() {
   };
 
   return (
-    <div style={{backgroundColor: isGameOver ? "red" : "green"}}>
-      {!urlParams.get("roomCode") && (
+    <div className="w-screen h-screen bg-zinc-700">
+      {/* {!urlParams.get("roomCode") && (
         <Connection
           sendJsonMessage={sendJsonMessage}
           setSocketUrl={setSocketUrl}
@@ -84,9 +86,10 @@ function App() {
           setRoomCode={setRoomCode}
           setIsTurn={setIsTurn}
         />
-      )}
-      {gameStarted && (
-        <ChessBoard
+      )} */}
+      {!gameStarted && (
+        <div className="flex justify-center gap-16 h-full">
+        <BoardLayout
           board={board}
           setBoard={setBoard}
           roomCode={roomCode}
@@ -96,25 +99,9 @@ function App() {
           setIsTurn={setIsTurn}
           setIsGameOver={setIsGameOver}
         />
+        <BoardSidebar/>
+        </div>
       )}
-      <div>
-        SVG Chess Pieces - By{" "}
-        <a href="//commons.wikimedia.org/wiki/User:Cburnett" title="User:Cburnett">
-          Cburnett
-        </a>{" "}
-        -{" "}
-        <span className="int-own-work" lang="en&">
-          Own work
-        </span>
-        ,{" "}
-        <a
-          href="http://creativecommons.org/licenses/by-sa/3.0/"
-          title="Creative Commons Attribution-Share Alike 3.0"
-        >
-          CC BY-SA 3.0
-        </a>
-        , <a href="https://commons.wikimedia.org/w/index.php?curid=1499806">Link</a>
-      </div>
     </div>
   );
 }

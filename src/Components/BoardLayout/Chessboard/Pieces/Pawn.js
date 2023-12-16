@@ -1,5 +1,5 @@
-import whitepawn from "../../Assets/Pieces/whitepawn.svg";
-import blackpawn from "../../Assets/Pieces/blackpawn.svg";
+import whitepawn from "../../../../Assets/Pieces/whitepawn.svg";
+import blackpawn from "../../../../Assets/Pieces/blackpawn.svg";
 
 function Pawn(props) {
   function pawnClicked(e) {
@@ -71,9 +71,9 @@ function Pawn(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img onClick={pawnClicked} className="piece" src={whitepawn} alt="White Pawn" />
+        <img onClick={pawnClicked} className="piece object-contain w-full" src={whitepawn} alt="White Pawn" />
       ) : (
-        <img onClick={pawnClicked} className="piece" src={blackpawn} alt="Black Pawn" />
+        <img onClick={pawnClicked} className="piece object-contain w-full" src={blackpawn} alt="Black Pawn" />
       )}
     </>
   );

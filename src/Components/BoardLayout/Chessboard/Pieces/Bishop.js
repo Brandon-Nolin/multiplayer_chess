@@ -1,8 +1,8 @@
-import whiterook from "../../Assets/Pieces/whiterook.svg";
-import blackrook from "../../Assets/Pieces/blackrook.svg";
+import whitebishop from "../../../../Assets/Pieces/whitebishop.svg";
+import blackbishop from "../../../../Assets/Pieces/blackbishop.svg";
 
-function Rook(props) {
-  function rookClicked(e) {
+function Bishop(props) {
+  function bishopClicked(e) {
     if (props.legalMove) {
       return;
     }
@@ -20,10 +20,10 @@ function Rook(props) {
     let legalMoves = [];
 
     const directions = [
-      [-1, 0], // up
-      [1, 0],  // down
-      [0, 1],  // right
-      [0, -1]  // left
+      [-1, -1], // top-left
+      [-1, 1],  // top-right
+      [1, 1],   // bottom-right
+      [1, -1]   // bottom-left
     ];
     
     for (const direction of directions) {
@@ -52,12 +52,12 @@ function Rook(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img onClick={rookClicked} className="piece" src={whiterook} alt="White Rook" />
+        <img onClick={bishopClicked} className="piece object-contain w-full" src={whitebishop} alt="White Bishop" />
       ) : (
-        <img onClick={rookClicked} className="piece" src={blackrook} alt="Black Rook" />
+        <img onClick={bishopClicked} className="piece object-contain w-full" src={blackbishop} alt="Black Bishop" />
       )}
     </>
   );
 }
 
-export default Rook;
+export default Bishop;

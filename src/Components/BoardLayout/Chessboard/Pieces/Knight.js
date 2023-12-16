@@ -1,5 +1,5 @@
-import whiteknight from "../../Assets/Pieces/whiteknight.svg";
-import blackknight from "../../Assets/Pieces/blackknight.svg";
+import whiteknight from "../../../../Assets/Pieces/whiteknight.svg";
+import blackknight from "../../../../Assets/Pieces/blackknight.svg";
 
 function Knight(props) {
   function knightClicked(e) {
@@ -57,9 +57,9 @@ function Knight(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img onClick={knightClicked} className="piece" src={whiteknight} alt="White Knight" />
+        <img onClick={knightClicked} className="piece object-contain w-full" src={whiteknight} alt="White Knight" />
       ) : (
-        <img onClick={knightClicked} className="piece" src={blackknight} alt="Black Knight" />
+        <img onClick={knightClicked} className="piece object-contain w-full" src={blackknight} alt="Black Knight" />
       )}
     </>
   );

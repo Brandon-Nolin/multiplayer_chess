@@ -1,8 +1,8 @@
-import whitebishop from "../../Assets/Pieces/whitebishop.svg";
-import blackbishop from "../../Assets/Pieces/blackbishop.svg";
+import whitequeen from "../../../../Assets/Pieces/whitequeen.svg";
+import blackqueen from "../../../../Assets/Pieces/blackqueen.svg";
 
-function Bishop(props) {
-  function bishopClicked(e) {
+function Queen(props) {
+  function queenClicked(e) {
     if (props.legalMove) {
       return;
     }
@@ -20,6 +20,10 @@ function Bishop(props) {
     let legalMoves = [];
 
     const directions = [
+      [-1, 0], // up
+      [1, 0],  // down
+      [0, 1],  // right
+      [0, -1], // left
       [-1, -1], // top-left
       [-1, 1],  // top-right
       [1, 1],   // bottom-right
@@ -52,12 +56,12 @@ function Bishop(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img onClick={bishopClicked} className="piece" src={whitebishop} alt="White Bishop" />
+        <img onClick={queenClicked} className="piece object-contain w-full" src={whitequeen} alt="White Queen" />
       ) : (
-        <img onClick={bishopClicked} className="piece" src={blackbishop} alt="Black Bishop" />
+        <img onClick={queenClicked} className="piece object-contain w-full" src={blackqueen} alt="Black Queen" />
       )}
     </>
   );
 }
 
-export default Bishop;
+export default Queen;
