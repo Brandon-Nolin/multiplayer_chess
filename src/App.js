@@ -2,7 +2,7 @@ import "./App.css";
 // import ChessBoard from "./Components/BoardLayout/Chessboard/Chessboard";
 import BoardLayout from "./Components/BoardLayout/BoardLayout";
 import BoardSidebar from "./Components/BoardSidebar/BoardSidebar";
-import Connection from "./Components/Connection/Connection";
+import NewGameModal from "./Components/Modals/NewGameModal";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useState, useCallback, useEffect } from "react";
 import { initialBoard } from "./Components/BoardLayout/Chessboard/initial-board-state";
@@ -73,36 +73,33 @@ function App() {
   };
 
   return (
-    <div className="w-screen h-screen bg-zinc-700">
-      {/* {!urlParams.get("roomCode") && (
-        <Connection
-          sendJsonMessage={sendJsonMessage}
-          setSocketUrl={setSocketUrl}
-          setSocketParams={setSocketParams}
+    <>
+      {!gameStarted && (
+        <NewGameModal
           connectSocket={connectSocket}
           setIsWhite={setIsWhite}
-          handleSendMessage={handleSendMessage}
           setIsCreator={setIsCreator}
+          setIsTurn={setIsTurn}
           setRoomCode={setRoomCode}
-          setIsTurn={setIsTurn}
-        />
-      )} */}
-      {!gameStarted && (
-        <div className="flex justify-center gap-16 h-full">
-        <BoardLayout
-          board={board}
-          setBoard={setBoard}
           roomCode={roomCode}
-          isWhite={isWhite}
-          handleSendMessage={handleSendMessage}
-          isTurn={isTurn}
-          setIsTurn={setIsTurn}
-          setIsGameOver={setIsGameOver}
         />
-        <BoardSidebar/>
-        </div>
       )}
-    </div>
+      <div className="w-screen h-screen bg-zinc-700">
+        <div className="flex justify-center gap-16 h-full">
+          <BoardLayout
+            board={board}
+            setBoard={setBoard}
+            roomCode={roomCode}
+            isWhite={isWhite}
+            handleSendMessage={handleSendMessage}
+            isTurn={isTurn}
+            setIsTurn={setIsTurn}
+            setIsGameOver={setIsGameOver}
+          />
+          <BoardSidebar />
+        </div>
+      </div>
+    </>
   );
 }
 

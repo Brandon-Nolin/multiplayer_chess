@@ -543,12 +543,12 @@ function ChessBoard(props) {
             let newColumnId = square.columnId + dy;
 
             while (newRowId >= 0 && newRowId <= 7 && newColumnId >= 0 && newColumnId <= 7) {
-              newRowId += dx;
-              newColumnId += dy;
-
               if (board[newRowId]?.[newColumnId]?.piece === king) {
                 return true;
               }
+
+              newRowId += dx;
+              newColumnId += dy;
 
               if (board[newRowId]?.[newColumnId]?.piece !== null) {
                 break;
@@ -571,12 +571,12 @@ function ChessBoard(props) {
             let newColumnId = square.columnId + dy;
 
             while (newRowId >= 0 && newRowId <= 7 && newColumnId >= 0 && newColumnId <= 7) {
-              newRowId += dx;
-              newColumnId += dy;
-
               if (board[newRowId]?.[newColumnId]?.piece === king) {
                 return true;
               }
+
+              newRowId += dx;
+              newColumnId += dy;
 
               if (board[newRowId]?.[newColumnId]?.piece !== null) {
                 break;
@@ -603,12 +603,12 @@ function ChessBoard(props) {
             let newColumnId = square.columnId + dy;
 
             while (newRowId >= 0 && newRowId <= 7 && newColumnId >= 0 && newColumnId <= 7) {
-              newRowId += dx;
-              newColumnId += dy;
-
               if (board[newRowId]?.[newColumnId]?.piece === king) {
                 return true;
               }
+
+              newRowId += dx;
+              newColumnId += dy;
 
               if (board[newRowId]?.[newColumnId]?.piece !== null) {
                 break;
