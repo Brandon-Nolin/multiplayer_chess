@@ -3,6 +3,7 @@ import Square from "./Square";
 
 function ChessBoard(props) {
   const [selectedPiece, setSelectedPiece] = useState([]);
+  const [checked, setChecked] = useState(false);
 
   const squareClicked = () => {
     props.setBoard((prevBoard) => {
@@ -547,12 +548,12 @@ function ChessBoard(props) {
                 return true;
               }
 
-              newRowId += dx;
-              newColumnId += dy;
-
               if (board[newRowId]?.[newColumnId]?.piece !== null) {
                 break;
               }
+
+              newRowId += dx;
+              newColumnId += dy;
             }
           }
         }
@@ -575,12 +576,12 @@ function ChessBoard(props) {
                 return true;
               }
 
-              newRowId += dx;
-              newColumnId += dy;
-
               if (board[newRowId]?.[newColumnId]?.piece !== null) {
                 break;
               }
+
+              newRowId += dx;
+              newColumnId += dy;
             }
           }
         }
@@ -607,12 +608,12 @@ function ChessBoard(props) {
                 return true;
               }
 
-              newRowId += dx;
-              newColumnId += dy;
-
               if (board[newRowId]?.[newColumnId]?.piece !== null) {
                 break;
               }
+
+              newRowId += dx;
+              newColumnId += dy;
             }
           }
         }
@@ -632,10 +633,14 @@ function ChessBoard(props) {
 
   useEffect(() => {
     if (isInCheck(props.board)) {
+      setChecked(true);
+
       //if the player starts their turn in check, see if there are any remaining legal moves. if there are not, they lose.
       if (noLegalMoves()) {
         props.setIsGameOver(true);
       }
+    } else {
+      setChecked(false);
     }
   }, [props.board]);
 
@@ -694,9 +699,11 @@ function ChessBoard(props) {
             legalMove={square.legalMove}
             rowId={square.rowId}
             pawnHasMoved={square.pawnHasMoved}
-            classes={`w-full h-full mt-auto min-h-20 ${square.color} ${square.legalMove && "movable"} ${
-              square.selected && "selected"
-            }`}
+            classes={`w-full h-full relative mt-auto min-h-20 overflow-hidden ${square.piece} ${
+              square.color
+            } ${(square.legalMove && square.piece === null) && "movable"} ${(square.legalMove && square.piece !== null) && "capturable"} ${square.selected && "selected"} ${
+              square?.piece?.includes("white-king") && props.isWhite && checked && "checked"
+            } ${square?.piece?.includes("black-king") && !props.isWhite && checked && "checked"}`}
           />
         );
       });
@@ -705,7 +712,15 @@ function ChessBoard(props) {
     return squares;
   };
 
-  return <div className={`board grid grid-cols-8 grid-rows-8 h-[84%] rounded-sm overflow-hidden shadow-lg ${!props.isWhite && "black"}`}>{renderBoard()}</div>;
+  return (
+    <div
+      className={`board grid grid-cols-8 grid-rows-8 h-[84%] rounded-sm overflow-hidden shadow-lg ${
+        !props.isWhite && "black"
+      }`}
+    >
+      {renderBoard()}
+    </div>
+  );
 }
 
 export default ChessBoard;

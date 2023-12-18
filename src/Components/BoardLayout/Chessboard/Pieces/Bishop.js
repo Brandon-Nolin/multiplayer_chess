@@ -52,9 +52,9 @@ function Bishop(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img onClick={bishopClicked} className="piece object-contain w-full" src={whitebishop} alt="White Bishop" />
+        <img onClick={bishopClicked} className="absolute piece object-contain w-full" src={whitebishop} alt="White Bishop" />
       ) : (
-        <img onClick={bishopClicked} className="piece object-contain w-full" src={blackbishop} alt="Black Bishop" />
+        <img onClick={bishopClicked} className="absolute piece object-contain w-full" src={blackbishop} alt="Black Bishop" />
       )}
     </>
   );

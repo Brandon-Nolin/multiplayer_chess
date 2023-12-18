@@ -52,9 +52,9 @@ function Rook(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img onClick={rookClicked} className="piece object-contain w-full" src={whiterook} alt="White Rook" />
+        <img onClick={rookClicked} className="absolute piece object-contain w-full" src={whiterook} alt="White Rook" />
       ) : (
-        <img onClick={rookClicked} className="piece object-contain w-full" src={blackrook} alt="Black Rook" />
+        <img onClick={rookClicked} className="absolute piece object-contain w-full" src={blackrook} alt="Black Rook" />
       )}
     </>
   );

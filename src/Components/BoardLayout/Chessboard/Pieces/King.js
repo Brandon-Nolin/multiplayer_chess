@@ -29,9 +29,9 @@ function King(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img onClick={kingClicked} className="piece object-contain w-full" src={whiteking} alt="White King" />
+        <img onClick={kingClicked} className="absolute piece object-contain w-full" src={whiteking} alt="White King" />
       ) : (
-        <img onClick={kingClicked} className="piece object-contain w-full" src={blackking} alt="Black King" />
+        <img onClick={kingClicked} className="absolute piece object-contain w-full" src={blackking} alt="Black King" />
       )}
     </>
   );

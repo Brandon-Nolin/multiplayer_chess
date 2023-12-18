@@ -57,9 +57,9 @@ function Knight(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img onClick={knightClicked} className="piece object-contain w-full" src={whiteknight} alt="White Knight" />
+        <img onClick={knightClicked} className="absolute piece object-contain w-full" src={whiteknight} alt="White Knight" />
       ) : (
-        <img onClick={knightClicked} className="piece object-contain w-full" src={blackknight} alt="Black Knight" />
+        <img onClick={knightClicked} className="absolute piece object-contain w-full" src={blackknight} alt="Black Knight" />
       )}
     </>
   );

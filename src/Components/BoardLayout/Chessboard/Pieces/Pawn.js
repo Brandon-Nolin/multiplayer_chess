@@ -71,9 +71,9 @@ function Pawn(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img onClick={pawnClicked} className="piece object-contain w-full" src={whitepawn} alt="White Pawn" />
+        <img onClick={pawnClicked} className="absolute piece object-contain w-full" src={whitepawn} alt="White Pawn" />
       ) : (
-        <img onClick={pawnClicked} className="piece object-contain w-full" src={blackpawn} alt="Black Pawn" />
+        <img onClick={pawnClicked} className="absolute piece object-contain w-full" src={blackpawn} alt="Black Pawn" />
       )}
     </>
   );

@@ -26,6 +26,37 @@
   background-color: #f7f769;
 }
 
-.movable {
+.movable div {
+  height: 40%;
+  width: 40%;
+  background-color: black;
+  opacity: 0.3;
+}
+
+.capturable.light {
+  background-color: #AAA38B;
+}
+
+.capturable.dark {
+  background-color: #695F46;
+}
+
+.capturable.dark div {
+  height: 110%;
+  width: 110%;
+  background-color: #968864;
+}
+
+.capturable.light div {
+  height: 110%;
+  width: 110%;
+  background-color: #F4EAC7;
+}
+
+.checked div {
+  height: 70%;
+  width: 70%;
   background-color: red;
+  box-shadow: 0 0 10px 10px red;
+  opacity: 0.65;
 }

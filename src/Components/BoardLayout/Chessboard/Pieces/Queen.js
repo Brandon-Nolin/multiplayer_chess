@@ -56,9 +56,9 @@ function Queen(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img onClick={queenClicked} className="piece object-contain w-full" src={whitequeen} alt="White Queen" />
+        <img onClick={queenClicked} className="absolute piece object-contain w-full" src={whitequeen} alt="White Queen" />
       ) : (
-        <img onClick={queenClicked} className="piece object-contain w-full" src={blackqueen} alt="Black Queen" />
+        <img onClick={queenClicked} className="absolute piece object-contain w-full" src={blackqueen} alt="Black Queen" />
       )}
     </>
   );
