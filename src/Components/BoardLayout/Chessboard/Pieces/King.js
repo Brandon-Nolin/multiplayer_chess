@@ -17,8 +17,61 @@ function King(props) {
 
     for (let i = -1; i <= 1; i++) {
       for (let j = -1; j <= 1; j++) {
-        if (!(i === 0 && j === 0) && props.rowId + i >= 0 && props.rowId + i < 8 && props.columnId + j >= 0 && props.columnId + j < 8) {
+        if (
+          !(i === 0 && j === 0) &&
+          props.rowId + i >= 0 &&
+          props.rowId + i < 8 &&
+          props.columnId + j >= 0 &&
+          props.columnId + j < 8
+        ) {
           legalMoves.push([props.rowId + i, props.columnId + j]);
+        }
+      }
+    }
+
+    //Castling
+    if (!props.isInCheck) {
+      if (!props.kingHasMoved) {
+        //check queenside line of sight and ensure no checks will occur
+        let queensideCastle = true;
+        for (let i = 3; i > 0; i--) {
+          if (
+            props.board[props.rowId][i].piece !== null ||
+            props.legalMoveIsCheck([props.rowId, props.columnId], [props.rowId, i], props.board)
+          ) {
+            queensideCastle = false;
+          }
+        }
+
+        //check if queenside rook has moved
+        if (
+          queensideCastle &&
+          props.board[props.rowId][0].piece?.includes("rook") &&
+          !props.board[props.rowId][0].rookHasMoved
+        ) {
+          legalMoves.push([props.rowId, 0, "CASTLE"]);
+          legalMoves.push([props.rowId, 2, "CASTLE"]);
+        }
+
+        //check queenside line of sight and ensure no checks will occur
+        let kingsideCastle = true;
+        for (let i = 5; i < 7; i++) {
+          if (
+            props.board[props.rowId][i].piece !== null ||
+            props.legalMoveIsCheck([props.rowId, props.columnId], [props.rowId, i], props.board)
+          ) {
+            kingsideCastle = false;
+          }
+        }
+
+        //check if kingside rook has moved
+        if (
+          kingsideCastle &&
+          props.board[props.rowId][7].piece?.includes("rook") &&
+          !props.board[props.rowId][7].rookHasMoved
+        ) {
+          legalMoves.push([props.rowId, 6, "CASTLE"]);
+          legalMoves.push([props.rowId, 7, "CASTLE"]);
         }
       }
     }
@@ -29,9 +82,19 @@ function King(props) {
   return (
     <>
       {props.piece?.includes("white") ? (
-        <img onClick={kingClicked} className="absolute piece object-contain w-full" src={whiteking} alt="White King" />
+        <img
+          onClick={kingClicked}
+          className="absolute piece object-contain w-full"
+          src={whiteking}
+          alt="White King"
+        />
       ) : (
-        <img onClick={kingClicked} className="absolute piece object-contain w-full" src={blackking} alt="Black King" />
+        <img
+          onClick={kingClicked}
+          className="absolute piece object-contain w-full"
+          src={blackking}
+          alt="Black King"
+        />
       )}
     </>
   );

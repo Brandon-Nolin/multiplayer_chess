@@ -3,8 +3,8 @@ import "./App.css";
 import BoardLayout from "./Components/BoardLayout/BoardLayout";
 import BoardSidebar from "./Components/BoardSidebar/BoardSidebar";
 import NewGameModal from "./Components/Modals/NewGameModal";
-import useWebSocket, { ReadyState } from "react-use-websocket";
-import { useState, useCallback, useEffect } from "react";
+import useWebSocket from "react-use-websocket";
+import { useState, useEffect } from "react";
 import { initialBoard } from "./Components/BoardLayout/Chessboard/initial-board-state";
 
 function App() {

@@ -43,6 +43,12 @@ function ChessBoard(props) {
 
       if (props.isTurn) {
         legalMoves.forEach((legalMove) => {
+          if(legalMove[2] === "CASTLE"){
+            newBoard[legalMove[0]][legalMove[1]].legalMove = true;
+            setSelectedPiece((prevState) => {
+              return [...prevState, "CASTLE"]
+            })
+          }
           if (
             (props.isWhite && newBoard[legalMove[0]][legalMove[1]].piece?.includes("black")) ||
             newBoard[legalMove[0]][legalMove[1]].piece === null
@@ -656,8 +662,52 @@ function ChessBoard(props) {
         });
       });
 
-      //set the piece of the new location to the piece of the selected location.
-      newBoard[newLocation[0]][newLocation[1]].piece = selectedPiece[2];
+      if(selectedPiece[3] === "CASTLE"){
+        if(newLocation[1] === 7 || newLocation[1] === 6){
+          //set new rook position
+          newBoard[newLocation[0]][5].piece = newBoard[newLocation[0]][7].piece;
+          newBoard[newLocation[0]][5].rookHasMoved = true;
+
+          //remove old rook
+          newBoard[newLocation[0]][7].piece = null;
+          newBoard[newLocation[0]][7].rookHasMoved = false;
+
+          //move king
+          newBoard[newLocation[0]][6].piece = selectedPiece[2];
+          newBoard[newLocation[0]][6].piece = selectedPiece[2];
+          newBoard[selectedPiece[0]][selectedPiece[1]].kingHasMoved = false;
+          newBoard[newLocation[0]][[6]].kingHasMoved = true;
+        }else if (newLocation[1] === 0 || newLocation[1] === 2){
+          //set new rook position
+          newBoard[newLocation[0]][3].piece = newBoard[newLocation[0]][0].piece;
+          newBoard[newLocation[0]][3].rookHasMoved = true;
+
+          //remove old rook
+          newBoard[newLocation[0]][0].piece = null;
+          newBoard[newLocation[0]][0].rookHasMoved = false;
+
+          //move king
+          newBoard[newLocation[0]][2].piece = selectedPiece[2];
+          newBoard[newLocation[0]][2].piece = selectedPiece[2];
+          newBoard[selectedPiece[0]][selectedPiece[1]].kingHasMoved = false;
+          newBoard[newLocation[0]][[2]].kingHasMoved = true;
+        }
+
+      }else{
+        //set the piece of the new location to the piece of the selected location.
+        newBoard[newLocation[0]][newLocation[1]].piece = selectedPiece[2];
+
+
+        if (newBoard[selectedPiece[0]][selectedPiece[1]].piece?.includes("rook")) {
+          newBoard[selectedPiece[0]][selectedPiece[1]].rookHasMoved = false;
+          newBoard[newLocation[0]][newLocation[1]].rookHasMoved = true;
+        }
+  
+        if (newBoard[selectedPiece[0]][selectedPiece[1]].piece?.includes("king")) {
+          newBoard[selectedPiece[0]][selectedPiece[1]].kingHasMoved = false;
+          newBoard[newLocation[0]][newLocation[1]].kingHasMoved = true;
+        }
+      }
 
       if (newBoard[selectedPiece[0]][selectedPiece[1]].piece?.includes("pawn")) {
         newBoard[selectedPiece[0]][selectedPiece[1]].pawnHasMoved = false;
@@ -699,6 +749,10 @@ function ChessBoard(props) {
             legalMove={square.legalMove}
             rowId={square.rowId}
             pawnHasMoved={square.pawnHasMoved}
+            rookHasMoved={square.rookHasMoved}
+            kingHasMoved={square.kingHasMoved}
+            checked={checked}
+            legalMoveIsCheck={legalMoveIsCheck}
             classes={`w-full h-full relative mt-auto min-h-20 overflow-hidden ${square.piece} ${
               square.color
             } ${(square.legalMove && square.piece === null) && "movable"} ${(square.legalMove && square.piece !== null) && "capturable"} ${square.selected && "selected"} ${

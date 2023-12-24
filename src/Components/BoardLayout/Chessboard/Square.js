@@ -8,6 +8,7 @@ import Pawn from "./Pieces/Pawn";
 function Square(props) {
   function squareClicked() {
     if (props.legalMove) {
+      console.log(props)
       props.movePiece([props.rowId, props.columnId]);
     } else {
       props.squareClicked();
@@ -82,6 +83,9 @@ function Square(props) {
           legalMove={props.legalMove}
           columnId={props.columnId}
           rowId={props.rowId}
+          isInCheck={props.checked}
+          kingHasMoved={props.kingHasMoved}
+          legalMoveIsCheck={props.legalMoveIsCheck}
         />
       )}
     </div>

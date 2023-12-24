@@ -28,8 +28,6 @@ function NewGameModal({ setIsWhite, setIsTurn, setIsCreator, setRoomCode, connec
     }, 1500)
   };
 
-  console.log(copied)
-
   return (
     <div className="absolute flex justify-center items-center w-full h-screen bg-zinc-950/90 z-10">
       <div className="w-1/3 shadow-lg top-0 opacity-100">
