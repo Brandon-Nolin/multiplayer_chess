@@ -19,6 +19,7 @@ function App() {
   const [roomCode, setRoomCode] = useState(urlParams.get("roomCode"));
   const [isCreator, setIsCreator] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [chatMessages, setChatMessages] = useState([]);
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
     queryParams: socketParams,
@@ -60,6 +61,12 @@ function App() {
         setBoard(JSON.parse(lastMessage.data).boardState);
         setIsTurn(true);
       }
+
+      if (JSON.parse(lastMessage?.data).chatMessage) {
+        setChatMessages((prevState) => {
+          return [...prevState, { opponent: JSON.parse(lastMessage.data).chatMessage }];
+        });
+      }
     }
   }, [readyState, lastMessage]);
 
@@ -96,7 +103,12 @@ function App() {
             setIsTurn={setIsTurn}
             setIsGameOver={setIsGameOver}
           />
-          <BoardSidebar />
+          <BoardSidebar
+            handleSendMessage={handleSendMessage}
+            chatMessages={chatMessages}
+            setChatMessages={setChatMessages}
+            roomCode={roomCode}
+          />
         </div>
       </div>
     </>

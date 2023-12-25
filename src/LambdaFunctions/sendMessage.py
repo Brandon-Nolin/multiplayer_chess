@@ -25,5 +25,12 @@ def lambda_handler(event, context):
         if connection_id == existing_item['guestID']:
             apigw_management_client.post_to_connection(ConnectionId=existing_item['ownerID'], Data=json.dumps({'boardState' : board_state}).encode('utf-8'))
 
+    if message['type'] == 'chat':
+        chat_message = message['chatMessage']
+        if connection_id == existing_item['ownerID']:
+            apigw_management_client.post_to_connection(ConnectionId=existing_item['guestID'], Data=json.dumps({'chatMessage' : chat_message}).encode('utf-8'))
+        if connection_id == existing_item['guestID']:
+            apigw_management_client.post_to_connection(ConnectionId=existing_item['ownerID'], Data=json.dumps({'chatMessage' : chat_message}).encode('utf-8'))
+
     
     return {"statusCode": 200}

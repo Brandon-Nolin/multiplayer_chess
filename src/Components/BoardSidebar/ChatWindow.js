@@ -1,18 +1,37 @@
+import { useRef } from "react";
+
 import { IoMdSend } from "react-icons/io";
 import { IoMdFlag } from "react-icons/io";
 import { FaEquals } from "react-icons/fa6";
 
-function ChatWindow(props) {
+function ChatWindow({ handleSendMessage, chatMessages, setChatMessages, roomCode }) {
+  const inputRef = useRef();
+
+  const sendMessage = () => {
+    const message = {
+      type: "chat",
+      roomCode: roomCode,
+      chatMessage: inputRef.current.value,
+    };
+
+    setChatMessages((prevState) => {
+      return [...prevState, { self: inputRef.current.value }];
+    });
+
+    handleSendMessage(message);
+  };
+
   return (
     <div className="h-[45%] overflow-hidden px-4 py-1">
       <div className="flex flex-col h-[90%] p-2 rounded-md bg-zinc-600">
         <div className="flex-1"></div>
         <div className="h-auto relative">
-          <input 
-            className="block w-full pl-2 py-1 rounded-lg shadow-sm text-white bg-zinc-500 border border-zinc-800 placeholder-zinc-400 focus:ring-1 focus:ring-inset focus:ring-black-900" 
-            placeholder="Enter your message here..." 
+          <input
+            ref={inputRef}
+            className="block w-full pl-2 pr-8 py-1 rounded-lg shadow-sm text-white bg-zinc-500 border border-zinc-800 placeholder-zinc-400 focus:ring-1 focus:ring-inset focus:ring-black-900"
+            placeholder="Enter your message here..."
           />
-          <div className="absolute right-1 top-2">
+          <div onClick={sendMessage} className="absolute right-1.5 top-2.5">
             <IoMdSend className="text-white hover:text-gray-700 hover:cursor-pointer" />
           </div>
         </div>
