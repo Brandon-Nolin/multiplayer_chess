@@ -64,7 +64,7 @@ function App() {
 
       if (JSON.parse(lastMessage?.data).chatMessage) {
         setChatMessages((prevState) => {
-          return [...prevState, { opponent: JSON.parse(lastMessage.data).chatMessage }];
+          return [...prevState, { sender: "opponent", text: JSON.parse(lastMessage.data).chatMessage }];
         });
       }
     }
