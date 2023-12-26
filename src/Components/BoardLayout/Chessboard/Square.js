@@ -8,7 +8,6 @@ import Pawn from "./Pieces/Pawn";
 function Square(props) {
   function squareClicked() {
     if (props.legalMove) {
-      console.log(props)
       props.movePiece([props.rowId, props.columnId]);
     } else {
       props.squareClicked();

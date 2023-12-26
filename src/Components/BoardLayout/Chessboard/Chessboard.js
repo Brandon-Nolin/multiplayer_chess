@@ -1,9 +1,32 @@
 import { useEffect, useState } from "react";
 import Square from "./Square";
 
+import whitebishop from "../../../Assets/Pieces/whitebishop.svg";
+import blackbishop from "../../../Assets/Pieces/blackbishop.svg";
+import whiteknight from "../../../Assets/Pieces/whiteknight.svg";
+import blackknight from "../../../Assets/Pieces/blackknight.svg";
+import whitequeen from "../../../Assets/Pieces/whitequeen.svg";
+import blackqueen from "../../../Assets/Pieces/blackqueen.svg";
+import whiterook from "../../../Assets/Pieces/whiterook.svg";
+import blackrook from "../../../Assets/Pieces/blackrook.svg";
+
 function ChessBoard(props) {
   const [selectedPiece, setSelectedPiece] = useState([]);
   const [checked, setChecked] = useState(false);
+  const [pieceToPromote, setPieceToPromote] = useState([]);
+  const promotionPieces = ["queen", "knight", "rook", "bishop"];
+  const blackPieceImages = {
+    "queen": blackqueen,
+    "knight": blackknight,
+    "rook": blackrook,
+    "bishop": blackbishop,
+  };
+  const whitePieceImages = {
+    "queen": whitequeen,
+    "knight": whiteknight,
+    "rook": whiterook,
+    "bishop": whitebishop,
+  };
 
   const squareClicked = () => {
     props.setBoard((prevBoard) => {
@@ -43,11 +66,11 @@ function ChessBoard(props) {
 
       if (props.isTurn) {
         legalMoves.forEach((legalMove) => {
-          if(legalMove[2] === "CASTLE"){
+          if (legalMove[2] === "CASTLE") {
             newBoard[legalMove[0]][legalMove[1]].legalMove = true;
             setSelectedPiece((prevState) => {
-              return [...prevState, "CASTLE"]
-            })
+              return [...prevState, "CASTLE"];
+            });
           }
           if (
             (props.isWhite && newBoard[legalMove[0]][legalMove[1]].piece?.includes("black")) ||
@@ -662,8 +685,8 @@ function ChessBoard(props) {
         });
       });
 
-      if(selectedPiece[3] === "CASTLE"){
-        if(newLocation[1] === 7 || newLocation[1] === 6){
+      if (selectedPiece[3] === "CASTLE") {
+        if (newLocation[1] === 7 || newLocation[1] === 6) {
           //set new rook position
           newBoard[newLocation[0]][5].piece = newBoard[newLocation[0]][7].piece;
           newBoard[newLocation[0]][5].rookHasMoved = true;
@@ -677,7 +700,7 @@ function ChessBoard(props) {
           newBoard[newLocation[0]][6].piece = selectedPiece[2];
           newBoard[selectedPiece[0]][selectedPiece[1]].kingHasMoved = false;
           newBoard[newLocation[0]][[6]].kingHasMoved = true;
-        }else if (newLocation[1] === 0 || newLocation[1] === 2){
+        } else if (newLocation[1] === 0 || newLocation[1] === 2) {
           //set new rook position
           newBoard[newLocation[0]][3].piece = newBoard[newLocation[0]][0].piece;
           newBoard[newLocation[0]][3].rookHasMoved = true;
@@ -692,17 +715,15 @@ function ChessBoard(props) {
           newBoard[selectedPiece[0]][selectedPiece[1]].kingHasMoved = false;
           newBoard[newLocation[0]][[2]].kingHasMoved = true;
         }
-
-      }else{
+      } else {
         //set the piece of the new location to the piece of the selected location.
         newBoard[newLocation[0]][newLocation[1]].piece = selectedPiece[2];
-
 
         if (newBoard[selectedPiece[0]][selectedPiece[1]].piece?.includes("rook")) {
           newBoard[selectedPiece[0]][selectedPiece[1]].rookHasMoved = false;
           newBoard[newLocation[0]][newLocation[1]].rookHasMoved = true;
         }
-  
+
         if (newBoard[selectedPiece[0]][selectedPiece[1]].piece?.includes("king")) {
           newBoard[selectedPiece[0]][selectedPiece[1]].kingHasMoved = false;
           newBoard[newLocation[0]][newLocation[1]].kingHasMoved = true;
@@ -717,6 +738,37 @@ function ChessBoard(props) {
       //set the old locations piece to null.
       newBoard[selectedPiece[0]][selectedPiece[1]].piece = null;
 
+      //if the move was a promotion, we cant just do the normal flow of changing whose turn it is and sending the new state.
+      if (selectedPiece[2].includes("pawn") && (newLocation[0] === 0 || newLocation[0] === 7)) {
+        setPieceToPromote([newLocation[0], newLocation[1]]);
+        props.setIsPromoting(true);
+
+        return newBoard;
+      } else {
+        const message = {
+          type: "move",
+          roomCode: props.roomCode,
+          boardState: newBoard,
+        };
+
+        props.setIsTurn(false);
+        props.handleSendMessage(message);
+
+        return newBoard;
+      }
+    });
+  };
+
+  const promotePiece = (pieceName) => {
+    props.setBoard((prevBoard) => {
+      let newBoard = [...prevBoard];
+
+      newBoard[pieceToPromote[0]][pieceToPromote[1]].piece = pieceName;
+
+      if (pieceName.includes("rook")) {
+        newBoard[pieceToPromote[0]][pieceToPromote[1]].rookHasMoved = true;
+      }
+
       const message = {
         type: "move",
         roomCode: props.roomCode,
@@ -724,6 +776,7 @@ function ChessBoard(props) {
       };
 
       props.setIsTurn(false);
+      props.setIsPromoting(false);
       props.handleSendMessage(message);
 
       return newBoard;
@@ -741,7 +794,7 @@ function ChessBoard(props) {
             board={props.board}
             squareClicked={squareClicked}
             piece={square.piece}
-            pieceClicked={pieceClicked}
+            pieceClicked={props.isPromoting ? () => {} : pieceClicked}
             movePiece={movePiece}
             setIsTurn={props.setIsTurn}
             isWhite={props.isWhite}
@@ -755,7 +808,9 @@ function ChessBoard(props) {
             legalMoveIsCheck={legalMoveIsCheck}
             classes={`w-full h-full relative mt-auto min-h-20 overflow-hidden ${square.piece} ${
               square.color
-            } ${(square.legalMove && square.piece === null) && "movable"} ${(square.legalMove && square.piece !== null) && "capturable"} ${square.selected && "selected"} ${
+            } ${square.legalMove && square.piece === null && "movable"} ${
+              square.legalMove && square.piece !== null && "capturable"
+            } ${square.selected && "selected"} ${
               square?.piece?.includes("white-king") && props.isWhite && checked && "checked"
             } ${square?.piece?.includes("black-king") && !props.isWhite && checked && "checked"}`}
           />
@@ -768,10 +823,28 @@ function ChessBoard(props) {
 
   return (
     <div
-      className={`board grid grid-cols-8 grid-rows-8 h-[84%] rounded-sm overflow-hidden shadow-lg ${
+      className={`board relative grid grid-cols-8 grid-rows-8 h-[84%] rounded-sm overflow-hidden shadow-lg ${
         !props.isWhite && "black"
       }`}
     >
+      {props.isPromoting && (
+        <div className={`absolute w-full h-full z-20 ${!props.isWhite ? "rotate-180" : ""}`}>
+          <div className="absolute z-10 w-3/5 flex justify-center top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/3 bg-white border border-gray-400 rounded-md divide-x hover:cursor-pointer">
+            {promotionPieces.map((pieceType, index) => (
+              <img
+                key={index}
+                onClick={() => promotePiece(`${props.isWhite ? "white-" : "black-"}${pieceType}`)}
+                className="grow border-gray-400 hover:bg-gray-200"
+                src={props.isWhite ? whitePieceImages[pieceType] : blackPieceImages[pieceType]}
+                alt={`${props.isWhite ? "White" : "Black"} ${
+                  pieceType.charAt(0).toUpperCase() + pieceType.slice(1)
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
       {renderBoard()}
     </div>
   );

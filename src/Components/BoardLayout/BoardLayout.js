@@ -15,6 +15,8 @@ function BoardLayout(props){
           isTurn={props.isTurn}
           setIsTurn={props.setIsTurn}
           setIsGameOver={props.setIsGameOver}
+          isPromoting={props.isPromoting}
+          setIsPromoting={props.setIsPromoting}
         />
       <PlayerRow isWhite={props.isWhite} top={false} />
     </div>

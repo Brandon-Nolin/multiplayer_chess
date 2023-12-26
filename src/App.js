@@ -20,6 +20,7 @@ function App() {
   const [isCreator, setIsCreator] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
+  const [isPromoting, setIsPromoting] = useState(false);
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
     queryParams: socketParams,
@@ -102,6 +103,8 @@ function App() {
             isTurn={isTurn}
             setIsTurn={setIsTurn}
             setIsGameOver={setIsGameOver}
+            isPromoting={isPromoting}
+            setIsPromoting={setIsPromoting}
           />
           <BoardSidebar
             handleSendMessage={handleSendMessage}
