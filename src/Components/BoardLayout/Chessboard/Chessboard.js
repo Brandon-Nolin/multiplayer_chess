@@ -72,6 +72,12 @@ function ChessBoard(props) {
               return [...prevState, "CASTLE"];
             });
           }
+          if (legalMove[2] === "EN_PASSANT") {
+            newBoard[legalMove[0]][legalMove[1]].legalMove = true;
+            setSelectedPiece((prevState) => {
+              return [...prevState, "EN_PASSANT"];
+            });
+          }
           if (
             (props.isWhite && newBoard[legalMove[0]][legalMove[1]].piece?.includes("black")) ||
             newBoard[legalMove[0]][legalMove[1]].piece === null
@@ -715,6 +721,22 @@ function ChessBoard(props) {
           newBoard[selectedPiece[0]][selectedPiece[1]].kingHasMoved = false;
           newBoard[newLocation[0]][[2]].kingHasMoved = true;
         }
+      }
+      else if(selectedPiece[3] === "EN_PASSANT"){
+        const direction = props.isWhite ? 1 : -1;
+
+        // Set pawn new position
+        newBoard[newLocation[0]][newLocation[1]].piece = selectedPiece[2];
+        newBoard[newLocation[0]][newLocation[1]].pawnHasMoved = true;
+
+        // Remove captured pawn
+        newBoard[newLocation[0] + direction][newLocation[1]].piece = null;
+        newBoard[newLocation[0] + direction][newLocation[1]].pawnHasMoved = false;
+        newBoard[newLocation[0] + direction][newLocation[1]].enPassantValid = false;
+
+        // Remove old pawn
+        newBoard[selectedPiece[0]][selectedPiece[1]].piece = null;
+        newBoard[selectedPiece[0]][selectedPiece[1]].pawnHasMoved = false;
       } else {
         //set the piece of the new location to the piece of the selected location.
         newBoard[newLocation[0]][newLocation[1]].piece = selectedPiece[2];
@@ -731,6 +753,16 @@ function ChessBoard(props) {
       }
 
       if (newBoard[selectedPiece[0]][selectedPiece[1]].piece?.includes("pawn")) {
+        //determine if the pawn is valid for an en passant capture
+        if (
+          newBoard[selectedPiece[0]][selectedPiece[1]].pawnHasMoved === undefined &&
+          Math.abs(selectedPiece[0] - newLocation[0]) === 2
+        ) {
+          newBoard[newLocation[0]][newLocation[1]].enPassantValid = true;
+        } else {
+          newBoard[newLocation[0]][newLocation[1]].enPassantValid = false;
+        }
+
         newBoard[selectedPiece[0]][selectedPiece[1]].pawnHasMoved = false;
         newBoard[newLocation[0]][newLocation[1]].pawnHasMoved = true;
       }
