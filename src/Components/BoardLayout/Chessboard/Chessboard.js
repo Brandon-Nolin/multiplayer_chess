@@ -744,7 +744,15 @@ function ChessBoard(props) {
 
       // If the player starts their turn in check, see if there are any remaining legal moves. if there are not, they lose.
       if (noLegalMoves()) {
-        props.setIsGameOver(true);
+        props.setEndGame([true, "Lost"]);
+
+        const message = {
+          type: "move",
+          roomCode: props.roomCode,
+          boardState: [props.board, "CHECKMATE"],
+        };
+
+        props.handleSendMessage(message);
       }
     } else {
       // Set the checked state to false
@@ -866,7 +874,7 @@ function ChessBoard(props) {
         const message = {
           type: "move",
           roomCode: props.roomCode,
-          boardState: newBoard,
+          boardState: [newBoard, ""],
         };
 
         props.setIsTurn(false);

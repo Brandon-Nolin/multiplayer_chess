@@ -14,7 +14,7 @@ function BoardLayout(props){
           handleSendMessage={props.handleSendMessage}
           isTurn={props.isTurn}
           setIsTurn={props.setIsTurn}
-          setIsGameOver={props.setIsGameOver}
+          setEndGame={props.setEndGame}
           isPromoting={props.isPromoting}
           setIsPromoting={props.setIsPromoting}
         />

@@ -1,8 +1,8 @@
 import "./App.css";
-// import ChessBoard from "./Components/BoardLayout/Chessboard/Chessboard";
 import BoardLayout from "./Components/BoardLayout/BoardLayout";
 import BoardSidebar from "./Components/BoardSidebar/BoardSidebar";
 import NewGameModal from "./Components/Modals/NewGameModal";
+import EndGameModal from "./Components/Modals/EndGameModal";
 import useWebSocket from "react-use-websocket";
 import { useState, useEffect } from "react";
 import { initialBoard } from "./Components/BoardLayout/Chessboard/initial-board-state";
@@ -18,7 +18,7 @@ function App() {
   const urlParams = new URLSearchParams(queryString);
   const [roomCode, setRoomCode] = useState(urlParams.get("roomCode"));
   const [isCreator, setIsCreator] = useState(false);
-  const [isGameOver, setIsGameOver] = useState(false);
+  const [endGame, setEndGame] = useState([false, ""]);
   const [chatMessages, setChatMessages] = useState([]);
   const [isPromoting, setIsPromoting] = useState(false);
 
@@ -59,8 +59,12 @@ function App() {
       }
 
       if (JSON.parse(lastMessage?.data).boardState) {
-        setBoard(JSON.parse(lastMessage.data).boardState);
-        setIsTurn(true);
+        if(JSON.parse(lastMessage.data).boardState[1] == "CHECKMATE"){
+          setEndGame([true, "Won"]);
+        }else{
+          setBoard(JSON.parse(lastMessage.data).boardState[0]);
+          setIsTurn(true);
+        }
       }
 
       if (JSON.parse(lastMessage?.data).chatMessage) {
@@ -80,6 +84,19 @@ function App() {
     sendJsonMessage({ "action": "sendMessage", "message": message });
   };
 
+  const reset = () => {
+    setSocketUrl(null);
+    setGameStarted(false);
+    setEndGame(false, "");
+    setIsWhite(true);
+    setIsCreator(false);
+    setIsTurn(false);
+    urlParams.delete("roomCode")
+    window.history.replaceState({}, '', window.location.origin + window.location.pathname);
+    setRoomCode(null);
+    setBoard(initialBoard);
+  }
+
   return (
     <>
       {!gameStarted && (
@@ -92,6 +109,12 @@ function App() {
           roomCode={roomCode}
         />
       )}
+      {endGame[0] && (
+        <EndGameModal
+          endGame={endGame}
+          reset={reset}
+        />
+      )}
       <div className="w-screen h-screen bg-zinc-700">
         <div className="flex justify-center gap-16 h-full">
           <BoardLayout
@@ -102,7 +125,7 @@ function App() {
             handleSendMessage={handleSendMessage}
             isTurn={isTurn}
             setIsTurn={setIsTurn}
-            setIsGameOver={setIsGameOver}
+            setEndGame={setEndGame}
             isPromoting={isPromoting}
             setIsPromoting={setIsPromoting}
           />
