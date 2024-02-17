@@ -49,8 +49,8 @@ function King(props) {
           props.board[props.rowId][0].piece?.includes("rook") &&
           !props.board[props.rowId][0].rookHasMoved
         ) {
-          legalMoves.push([props.rowId, 0, "CASTLE"]);
-          legalMoves.push([props.rowId, 2, "CASTLE"]);
+          legalMoves.push([props.rowId, 0, "QUEENSIDE_CASTLE"]);
+          legalMoves.push([props.rowId, 2, "QUEENSIDE_CASTLE"]);
         }
 
         //check queenside line of sight and ensure no checks will occur
@@ -70,8 +70,8 @@ function King(props) {
           props.board[props.rowId][7].piece?.includes("rook") &&
           !props.board[props.rowId][7].rookHasMoved
         ) {
-          legalMoves.push([props.rowId, 6, "CASTLE"]);
-          legalMoves.push([props.rowId, 7, "CASTLE"]);
+          legalMoves.push([props.rowId, 6, "KINGSIDE_CASTLE"]);
+          legalMoves.push([props.rowId, 7, "KINGSIDE_CASTLE"]);
         }
       }
     }
