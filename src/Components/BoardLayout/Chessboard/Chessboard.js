@@ -344,7 +344,7 @@ function ChessBoard(props) {
                 return false;
               }
 
-              if (props.board[row + forward * 2][col]?.piece === null) {
+              if (props.board[row + forward * 2][col]?.piece === null && !square.piece.pawnHasMoved) {
                 if (!legalMoveIsCheck([row, col], [row + forward * 2, col], props.board)) {
                   return false;
                 }
@@ -908,7 +908,7 @@ function ChessBoard(props) {
       const message = {
         type: "move",
         roomCode: props.roomCode,
-        boardState: newBoard,
+        boardState: [newBoard, ""],
       };
 
       // End the turn, close the promotion UI, and send the message.
