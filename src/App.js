@@ -6,6 +6,7 @@ import EndGameModal from "./Components/Modals/EndGameModal";
 import useWebSocket from "react-use-websocket";
 import { useState, useEffect } from "react";
 import { initialBoard } from "./Components/BoardLayout/Chessboard/initial-board-state";
+import MobileBoardSidebar from "./Components/MobileBoardSidebar/MobileBoarSidebar";
 
 function App() {
   const [board, setBoard] = useState(initialBoard);
@@ -33,7 +34,7 @@ function App() {
       setSocketUrl("wss://32yizcqo3f.execute-api.us-east-1.amazonaws.com/production");
       setSocketParams({ roomID: roomCode });
       setGameStarted(true);
-      setIsLoading(true);
+      // setIsLoading(true);
     } else {
       setGameStarted(false);
     }
@@ -98,7 +99,7 @@ function App() {
 
   /**
    * Sends a message through the websocket.
-   * 
+   *
    * @param {*} message The message content to send.
    */
   const handleSendMessage = (message) => {
@@ -158,7 +159,7 @@ function App() {
         </div>
       )}
       <div className="w-screen h-screen bg-zinc-700">
-        <div className="flex justify-center gap-16 h-full">
+        <div className="flex justify-center gap-16 h-full flex-col lg:flex-row">
           <BoardLayout
             board={board}
             setBoard={setBoard}
@@ -171,12 +172,17 @@ function App() {
             isPromoting={isPromoting}
             setIsPromoting={setIsPromoting}
           />
-          <BoardSidebar
-            handleSendMessage={handleSendMessage}
-            chatMessages={chatMessages}
-            setChatMessages={setChatMessages}
-            roomCode={roomCode}
-          />
+          <div className="w-4/12 hidden lg:flex">
+            <BoardSidebar
+              handleSendMessage={handleSendMessage}
+              chatMessages={chatMessages}
+              setChatMessages={setChatMessages}
+              roomCode={roomCode}
+            />
+          </div>
+          <div className="block lg:hidden">
+            <MobileBoardSidebar/>
+          </div>
         </div>
       </div>
     </>

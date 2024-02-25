@@ -4,7 +4,7 @@ import PlayerRow from "./PlayerRow/PlayerRow";
 function BoardLayout(props){
 
   return(
-    <div className="my-auto h-[95%] flex flex-col">
+    <div className="my-auto lg:h-[95%] flex flex-col">
       <PlayerRow isWhite={!props.isWhite} top={true} />
       <ChessBoard
           board={props.board}

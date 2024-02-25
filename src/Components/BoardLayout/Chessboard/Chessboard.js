@@ -966,7 +966,7 @@ function ChessBoard(props) {
 
   return (
     <div
-      className={`board relative grid grid-cols-8 grid-rows-8 h-[84%] rounded-sm overflow-hidden shadow-lg ${
+      className={`board relative grid grid-cols-8 grid-rows-8 w-screen lg:w-auto lg:h-[84%] rounded-sm overflow-hidden shadow-lg ${
         !props.isWhite && "black"
       }`}
     >
