@@ -34,7 +34,7 @@ function App() {
       setSocketUrl("wss://32yizcqo3f.execute-api.us-east-1.amazonaws.com/production");
       setSocketParams({ roomID: roomCode });
       setGameStarted(true);
-      // setIsLoading(true);
+      setIsLoading(true);
     } else {
       setGameStarted(false);
     }
