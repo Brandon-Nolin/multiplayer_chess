@@ -1,6 +1,6 @@
 ## Online Multiplayer Chess
 
-Currently hosted on [chess.brandonnolin.ca](chess.brandonnolin.ca).
+Currently hosted on [chess.brandonnolin.ca](https://chess.brandonnolin.ca).
 
 This project was heavily inspired by websites like [chess.com](https://www.chess.com/), [lichess.org](https://lichess.org/), and other online chess platforms. Currently, many important features are not yet implemented and are displayed as non-functional UI components. Only the barebones functionality to play the game exists with users being able to play against eachother using the "Play a Friend" feature. Users can also chat with eachother using the chat window.
 
@@ -18,7 +18,7 @@ Some of the features that are currently missing but are planned to be implemente
   - Ability to find a game against another random player
 
 ### Running the App Locally:
-Though this app is hosted on [chess.brandonnolin.ca](chess.brandonnolin.ca), you can also run it locally. To do so, follow these steps:
+Though this app is hosted on [chess.brandonnolin.ca](https://chess.brandonnolin.ca), you can also run it locally. To do so, follow these steps:
 
   1. Download the repo.
   2. Navigate to the repo in the command line.
