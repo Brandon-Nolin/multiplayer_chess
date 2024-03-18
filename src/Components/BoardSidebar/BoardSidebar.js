@@ -1,7 +1,7 @@
 import ChatWindow from "./ChatWindow";
 import MoveHistory from "./MoveHistory";
 
-function BoardSidebar({ handleSendMessage, chatMessages, setChatMessages, roomCode }) {
+function BoardSidebar({ handleSendMessage, chatMessages, setChatMessages, roomCode, setEndGame }) {
   return (
     <div className="w-full h-[95%] rounded-sm shadow-lg bg-zinc-800 my-auto">
       <MoveHistory />
@@ -10,6 +10,7 @@ function BoardSidebar({ handleSendMessage, chatMessages, setChatMessages, roomCo
         chatMessages={chatMessages}
         setChatMessages={setChatMessages}
         roomCode={roomCode}
+        setEndGame={setEndGame}
       />
     </div>
   );

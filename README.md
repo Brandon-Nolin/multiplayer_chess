@@ -12,7 +12,6 @@ Some of the features that are currently missing but are planned to be implemente
   - Time Control
   - Move History (Displayed in box above chat window)
   - Offering Draws
-  - Resign
   - Offering Rematches
   - List of taken pieces
   - Ability to find a game against another random player

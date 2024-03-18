@@ -44,14 +44,16 @@ function App() {
    */
   useEffect(() => {
     if (lastMessage !== undefined && lastMessage !== null) {
+      let messageData = JSON.parse(lastMessage?.data);
+
       //When the initial message is sent from the creator, set the correct turn/color state and stop loading.
       if (readyState === 1 && !isCreator && isLoading) {
         setIsLoading(false);
 
-        if (JSON.parse(lastMessage?.data).ownerIsWhite === "true") {
+        if (messageData.ownerIsWhite === "true") {
           setIsTurn(false);
           setIsWhite(false);
-        } else if (JSON.parse(lastMessage?.data).ownerIsWhite === "false") {
+        } else if (messageData.ownerIsWhite === "false") {
           setIsTurn(true);
           setIsWhite(true);
         }
@@ -69,11 +71,11 @@ function App() {
       }
 
       //Changes the boardstate if it was passed in the message.
-      if (JSON.parse(lastMessage?.data).boardState) {
-        setBoard(JSON.parse(lastMessage.data).boardState[0]);
+      if (messageData?.boardState) {
+        setBoard(messageData.boardState[0]);
 
         //Either end the game or set isTurn to true.
-        if (JSON.parse(lastMessage.data).boardState[1] == "CHECKMATE") {
+        if (messageData.boardState[1] == "CHECKMATE") {
           setEndGame({ended: true, won: true, reason: "by checkmate"});
         } else {
           setIsTurn(true);
@@ -81,10 +83,15 @@ function App() {
       }
 
       //Adds chat messages to the chatMessages state if one was sent.
-      if (JSON.parse(lastMessage?.data).chatMessage) {
+      if (messageData?.chatMessage) {
         setChatMessages((prevState) => {
-          return [...prevState, { sender: "opponent", text: JSON.parse(lastMessage.data).chatMessage }];
+          return [...prevState, { recipient: true, text: JSON.parse(lastMessage.data).chatMessage }];
         });
+      }
+
+      //Ends the game with the recipient as the winnder if a resignation was sent.
+      if (messageData?.type === "resign"){
+        setEndGame({ended: true, won: true, reason: "by resignation"});
       }
     }
   }, [readyState, lastMessage]);
@@ -176,6 +183,7 @@ function App() {
               chatMessages={chatMessages}
               setChatMessages={setChatMessages}
               roomCode={roomCode}
+              setEndGame={setEndGame}
             />
           </div>
           <div className="block lg:hidden">
