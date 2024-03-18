@@ -18,11 +18,10 @@ function App() {
   const urlParams = new URLSearchParams(window.location.search);
   const [roomCode, setRoomCode] = useState(urlParams.get("roomCode"));
   const [isCreator, setIsCreator] = useState(false);
-  const [endGame, setEndGame] = useState([false, ""]);
+  const [endGame, setEndGame] = useState({ended: false, won: false, reason: ""});
   const [chatMessages, setChatMessages] = useState([]);
   const [isPromoting, setIsPromoting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [pregameState, setPregameState] = useState({});
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
     queryParams: socketParams,
@@ -67,8 +66,6 @@ function App() {
 
         handleSendMessage(message);
         setGameStarted(true);
-        setIsTurn(pregameState.isTurn);
-        setIsWhite(pregameState.isWhite);
       }
 
       //Changes the boardstate if it was passed in the message.
@@ -77,7 +74,7 @@ function App() {
 
         //Either end the game or set isTurn to true.
         if (JSON.parse(lastMessage.data).boardState[1] == "CHECKMATE") {
-          setEndGame([true, "Won"]);
+          setEndGame({ended: true, won: true, reason: "by checkmate"});
         } else {
           setIsTurn(true);
         }
@@ -112,11 +109,10 @@ function App() {
   const reset = () => {
     setSocketUrl(null);
     setGameStarted(false);
-    setEndGame(false, "");
+    setEndGame({ended: false, won: false, reason: ""});
     setIsWhite(true);
     setIsCreator(false);
     setIsTurn(false);
-    setPregameState({});
     urlParams.delete("roomCode");
     window.history.replaceState({}, "", window.location.origin + window.location.pathname);
     setRoomCode(null);
@@ -128,13 +124,14 @@ function App() {
       {!gameStarted && (
         <NewGameModal
           connectSocket={connectSocket}
-          setPregameState={setPregameState}
+          setIsWhite={setIsWhite}
+          setIsTurn={setIsTurn}
           setIsCreator={setIsCreator}
           setRoomCode={setRoomCode}
           roomCode={roomCode}
         />
       )}
-      {endGame[0] && <EndGameModal endGame={endGame} reset={reset} />}
+      {endGame.ended && <EndGameModal endGame={endGame} reset={reset} />}
       {isLoading && (
         <div className="absolute bg-black w-full h-full z-10 opacity-80 flex items-center justify-center">
           <div role="status">
@@ -171,6 +168,7 @@ function App() {
             setEndGame={setEndGame}
             isPromoting={isPromoting}
             setIsPromoting={setIsPromoting}
+            gameStarted={gameStarted}
           />
           <div className="w-4/12 hidden lg:flex">
             <BoardSidebar

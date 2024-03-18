@@ -5,7 +5,7 @@ function BoardLayout(props){
 
   return(
     <div className="my-auto lg:h-[95%] flex flex-col">
-      <PlayerRow isWhite={!props.isWhite} top={true} />
+      <PlayerRow isWhite={props.gameStarted ? props.isWhite: true} top={true} />
       <ChessBoard
           board={props.board}
           setBoard={props.setBoard}
@@ -17,8 +17,9 @@ function BoardLayout(props){
           setEndGame={props.setEndGame}
           isPromoting={props.isPromoting}
           setIsPromoting={props.setIsPromoting}
+          gameStarted={props.gameStarted}
         />
-      <PlayerRow isWhite={props.isWhite} top={false} />
+      <PlayerRow isWhite={props.gameStarted ? !props.isWhite : false} top={false} />
     </div>
   );
 }

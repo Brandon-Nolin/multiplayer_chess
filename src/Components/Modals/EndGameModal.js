@@ -2,8 +2,9 @@ function EndGameModal({endGame, reset}) {
   return (
     <div className="absolute flex justify-center items-center w-full h-screen bg-zinc-950/90 z-10">
       <div className="w-full lg:w-1/3 md:w-2/3 shadow-lg top-0 opacity-100">
-        <div className="bg-zinc-600 flex justify-center items-center rounded-t-none md:rounded-t-lg">
-          <span className="p-6 text-center text-5xl font-medium text-white">You {endGame[1]}!</span>
+        <div className="bg-zinc-600 flex flex-col justify-center items-center rounded-t-none md:rounded-t-lg">
+          <span className="p-6 pb-3 text-center text-5xl font-medium text-white">You {endGame.won ? "Won" : "Lost"}!</span>
+          <p className="text-white px-6 pb-6">{endGame.reason}</p>
         </div>
         <div className="bg-zinc-800 rounded-b-none md:rounded-b-lg">
           <div className="flex justify-between gap-4 py-10 px-6">

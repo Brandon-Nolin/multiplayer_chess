@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { MdContentCopy } from "react-icons/md";
 
-function NewGameModal({ setPregameState, setIsCreator, setRoomCode, connectSocket, roomCode }) {
+function NewGameModal({ setIsWhite, setIsTurn, setIsCreator, setRoomCode, connectSocket, roomCode }) {
   const [copied, setCopied] = useState(false);
 
   const createGame = () => {
     const creatorIsWhite = Math.random() < 0.5;
     const roomCode = Math.random().toString(36).substring(2, 15);
 
-    setPregameState({isWhite: creatorIsWhite, isTurn: creatorIsWhite});
+    setIsWhite(creatorIsWhite);
+    setIsTurn(creatorIsWhite);
     setIsCreator(true);
     setRoomCode(roomCode);
 

@@ -744,7 +744,7 @@ function ChessBoard(props) {
 
       // If the player starts their turn in check, see if there are any remaining legal moves. if there are not, they lose.
       if (noLegalMoves()) {
-        props.setEndGame([true, "Lost"]);
+        props.setEndGame({ended: true, won: false, reason: "by checkmate"});
 
         const message = {
           type: "move",
@@ -967,11 +967,11 @@ function ChessBoard(props) {
   return (
     <div
       className={`board relative grid grid-cols-8 grid-rows-8 w-screen lg:w-auto lg:h-[84%] rounded-sm overflow-hidden shadow-lg ${
-        !props.isWhite && "black"
+        (!props.isWhite && props.gameStarted) && "black"
       }`}
     >
       {props.isPromoting && (
-        <div className={`absolute w-full h-full z-20 ${!props.isWhite ? "rotate-180" : ""}`}>
+        <div className={`absolute w-full h-full z-20 ${(!props.isWhite && props.gameStarted) ? "rotate-180" : ""}`}>
           <div className="absolute z-10 w-3/5 flex justify-center top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/3 bg-white border border-gray-400 rounded-md divide-x hover:cursor-pointer">
             {promotionPieces.map((pieceType, index) => (
               <img
