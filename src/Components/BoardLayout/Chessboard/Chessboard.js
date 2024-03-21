@@ -77,9 +77,7 @@ function ChessBoard(props) {
         legalMoves.forEach((legalMove) => {
           if (legalMove[2]) {
             newBoard[legalMove[0]][legalMove[1]].legalMove = true;
-            setSelectedPiece((prevState) => {
-              return [...prevState, legalMove[2]];
-            });
+            newBoard[legalMove[0]][legalMove[1]].specialMove = legalMove[2];
           }
           if (
             (props.isWhite && newBoard[legalMove[0]][legalMove[1]].piece?.includes("black")) ||
@@ -779,7 +777,7 @@ function ChessBoard(props) {
       });
 
       // Determine what type of move is being made.
-      if (selectedPiece[3] === "KINGSIDE_CASTLE") {
+      if (newBoard[newLocation[0]][newLocation[1]].specialMove === "KINGSIDE_CASTLE") {
         // If the move is a king side castle move, move the king and rook to the correct positions
 
         // Set new rook position
@@ -793,7 +791,7 @@ function ChessBoard(props) {
         // Move king to the new position and set the kingHasMoved property
         newBoard[newLocation[0]][6].piece = selectedPiece[2];
         newBoard[newLocation[0]][[6]].kingHasMoved = true;
-      } else if (selectedPiece[3] === "QUEENSIDE_CASTLE") {
+      } else if (newBoard[newLocation[0]][newLocation[1]].specialMove === "QUEENSIDE_CASTLE") {
         // If the move is a queen side castle move, move the king and rook to the correct positions
 
         // Set new rook position
@@ -807,7 +805,7 @@ function ChessBoard(props) {
         // Move king to the new position and set the kingHasMoved property
         newBoard[newLocation[0]][2].piece = selectedPiece[2];
         newBoard[newLocation[0]][[2]].kingHasMoved = true;
-      } else if (selectedPiece[3] === "EN_PASSANT") {
+      } else if (newBoard[newLocation[0]][newLocation[1]].specialMove === "EN_PASSANT") {
         // If the move is an en passant move, move the pawn to the new location and capture the opposing pawn
 
         // Determine which direction the pawn is moving based on if the player is white or not
